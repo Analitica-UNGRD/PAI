@@ -1,33 +1,17 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "src/**/*", "use": "@vercel/static" }
-  ],
+  "functions": {
+    "api/index.js": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/$", "destination": "/src/pages/login.html" },
+    { "source": "/", "destination": "/src/pages/login.html" },
     { "source": "/dashboard", "destination": "/src/pages/dashboard.html" },
     { "source": "/actividades", "destination": "/src/pages/actividades.html" },
     { "source": "/avance", "destination": "/src/pages/avance.html" },
-    { "source": "/login", "destination": "/src/pages/login.html" },
-    
-    { "source": "/src/lib/(.*)", "destination": "/src/lib/$1" },
-    { "source": "/src/styles/(.*)", "destination": "/src/styles/$1" },
-    { "source": "/src/assets/(.*)", "destination": "/src/assets/$1" },
-    { "source": "/src/pages_scripts/(.*)", "destination": "/src/pages_scripts/$1" },
-    
-    { "source": "/lib/(.*)", "destination": "/src/lib/$1" },
-    { "source": "/styles/(.*)", "destination": "/src/styles/$1" },
-    { "source": "/assets/(.*)", "destination": "/src/assets/$1" },
-    { "source": "/pages_scripts/(.*)", "destination": "/src/pages_scripts/$1" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "s-maxage=1, stale-while-revalidate" }
-      ]
-    }
+    { "source": "/login", "destination": "/src/pages/login.html" }
   ]
 }

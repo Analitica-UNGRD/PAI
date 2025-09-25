@@ -7,7 +7,8 @@
     "start": "npx http-server -c-1 -p 8080",
     "serve": "npx http-server -c-1 -p 8080",
     "preview": "npx vercel dev",
-    "test": "echo \"run tests here\" && exit 0"
+    "test": "echo \"run tests here\" && exit 0",
+    "build": "mkdir -p public && cp -r src/* public/ && cp -r api/ public/api/"
   },
   "keywords": ["login","auth","mock","sisco"],
   "author": "",

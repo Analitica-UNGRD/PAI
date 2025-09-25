@@ -1,0 +1,10 @@
+# Archivos a ignorar en el despliegue de Vercel
+.git
+.github
+node_modules
+*.log
+.env
+README.md
+local-api-proxy.js
+mock-auth-server.js
+.vercel
