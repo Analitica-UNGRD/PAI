@@ -48,8 +48,16 @@ module.exports = async (req, res) => {
 
     const text = await forwardResp.text();
     res.statusCode = forwardResp.status || 200;
-    res.setHeader('Content-Type', 'application/json');
-    return res.end(text);
+    // Try to return well-formed JSON when possible
+    try {
+      const parsed = text ? JSON.parse(text) : {};
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify(parsed));
+    } catch (e) {
+      // Not JSON; return as text with diagnostic wrapper
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify({ success: forwardResp.ok, status: forwardResp.status, body: text }));
+    }
   } catch (err) {
     console.error('API proxy error:', err);
     res.statusCode = 500;
