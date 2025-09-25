@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+  <link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>PAI 2025 - Avances Bimestrales</title>
+  <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --primary-color: #137fec;
+    }
+    body { font-family: 'Inter', 'Noto Sans', sans-serif; }
+  </style>
+  <link rel="stylesheet" href="../styles/sidebar.css">
+  <link rel="stylesheet" href="../styles/layout.css">
+  <link rel="stylesheet" href="../styles/avance.css">
+</head>
+<body class="bg-[var(--background-color)]">
+  <div class="h-full min-h-screen w-full flex-col">
+    <div class="flex-1">
+      <div class="layout-with-sidebar">
+        <div id="shared-sidebar" class="hidden md:block"></div>
+        <main class="p-4 sm:p-6 md:p-8">
+          <div class="mx-auto max-w-7xl">
+            <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+              <h2 class="text-3xl font-bold text-[var(--text-primary)]">Avances Bimestrales</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div class="lg:col-span-1 flex flex-col gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                  <h2 class="text-xl font-bold text-gray-800 mb-4">Filtros</h2>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 avance-filters">
+                    <select class="w-full h-12 px-4 rounded-md border border-gray-300 focus:ring-2 focus:ring-offset-0 focus:ring-[var(--primary-color)] transition duration-150 ease-in-out">
+                      <option>Año</option>
+                      <option>2024</option>
+                      <option selected>2025</option>
+                    </select>
+                    <select class="w-full h-12 px-4 rounded-md border border-gray-300 focus:ring-2 focus:ring-offset-0 focus:ring-[var(--primary-color)] transition duration-150 ease-in-out">
+                      <option>Bimestre</option>
+                      <option>1</option>
+                      <option>2</option>
+                    </select>
+                    <select class="w-full h-12 px-4 rounded-md border border-gray-300 focus:ring-2 focus:ring-offset-0 focus:ring-[var(--primary-color)] transition duration-150 ease-in-out">
+                      <option>Área</option>
+                      <option>OAPI</option>
+                      <option>Presupuesto</option>
+                    </select>
+                    <select class="w-full h-12 px-4 rounded-md border border-gray-300 focus:ring-2 focus:ring-offset-0 focus:ring-[var(--primary-color)] transition duration-150 ease-in-out">
+                      <option>Subproceso</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                  <h2 class="text-xl font-bold text-gray-800 mb-6">Registrar Nuevo Avance</h2>
+                  <form id="form-registrar-avance" class="space-y-4">
+                    <!-- advance id auto-generated -->
+                    <input type="hidden" name="avance_id" id="avance_id" value="" />
+
+                    <label class="block text-sm font-medium text-[var(--text-secondary)]">Actividad</label>
+                    <select name="actividad_id" id="actividad_id" class="w-full h-12 px-4 rounded-md border border-gray-300">
+                      <option value="">Cargando actividades...</option>
+                    </select>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <select name="anio" id="anio" class="w-full h-12 px-4 rounded-md border border-gray-300"><option value="2025">2025</option><option value="2024">2024</option></select>
+                      <select name="bimestre_id" id="bimestre_id" class="w-full h-12 px-4 rounded-md border border-gray-300">
+                        <option value="">Seleccionar bimestre</option>
+                        <option value="1">Enero-Febrero</option>
+                        <option value="2">Marzo-Abril</option>
+                        <option value="3">Mayo-Junio</option>
+                        <option value="4">Julio-Agosto</option>
+                        <option value="5">Sept-Oct</option>
+                        <option value="6">Nov-Dic</option>
+                      </select>
+                    </div>
+
+                    <label class="block text-sm font-medium text-[var(--text-secondary)]">Logro (valor)</label>
+                    <input name="logro_valor" id="logro_valor" class="w-full h-12 px-4 rounded-md border border-gray-300" placeholder="Logro del periodo" type="number" step="any"/>
+
+                    <label class="block text-sm font-medium text-[var(--text-secondary)]">Presupuesto ejecutado</label>
+                    <input name="presupuesto_ejecutado_bimestre" id="presupuesto_ejecutado_bimestre" class="w-full h-12 px-4 rounded-md border border-gray-300" placeholder="Presupuesto ejecutado del bimestre" type="number" step="0.01"/>
+
+                    <label class="block text-sm font-medium text-[var(--text-secondary)]">Avances (texto)</label>
+                    <textarea name="avances_texto" id="avances_texto" class="w-full p-4 rounded-md border border-gray-300" placeholder="Avances" rows="3"></textarea>
+
+                    <label class="block text-sm font-medium text-[var(--text-secondary)]">Dificultades (texto)</label>
+                    <textarea name="dificultades_texto" id="dificultades_texto" class="w-full p-4 rounded-md border border-gray-300" placeholder="Dificultades" rows="3"></textarea>
+
+                    <label class="block text-sm font-medium text-[var(--text-secondary)]">Evidencia</label>
+                    <input name="evidencia_url" id="evidencia_url" class="w-full h-12 px-4 rounded-md border border-gray-300" placeholder="Evidencia (URL o descripción)" type="text"/>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <label class="block text-sm font-medium text-[var(--text-secondary)]">Fecha de reporte</label>
+                      <label class="block text-sm font-medium text-[var(--text-secondary)]">Reportado por</label>
+                      <input name="fecha_reporte" id="fecha_reporte" class="w-full h-12 px-4 rounded-md border border-gray-300" type="date"/>
+                      <input name="reportado_por" id="reportado_por" class="w-full h-12 px-4 rounded-md border border-gray-300 bg-gray-50 cursor-not-allowed" placeholder="Reportado por" type="text" readonly />
+                    </div>
+                    <button class="w-full flex items-center justify-center gap-2 h-12 px-6 rounded-md bg-[var(--primary-color)] text-white font-bold hover:bg-blue-700 transition-colors" type="submit">
+                      <span class="material-symbols-outlined">save</span>
+                      Guardar Avance
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-xl font-bold text-gray-800">Lista de Avances</h2>
+                  <button class="export-avances-btn flex items-center gap-2 h-10 px-4 rounded-md" type="button">
+                    <span class="material-symbols-outlined text-lg">download</span>
+                    Exportar
+                  </button>
+                </div>
+
+                <div class="overflow-x-auto table-avances">
+                  <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                      <tr>
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Actividad</th>
+                        <th class="px-6 py-3">Área</th>
+                        <th class="px-6 py-3">Año</th>
+                        <th class="px-6 py-3">Bim.</th>
+                        <th class="px-6 py-3">Logro</th>
+                        <th class="px-6 py-3">Presupuesto</th>
+                        <th class="px-6 py-3">Evidencia</th>
+                        <th class="px-6 py-3">Reportado por</th>
+                        <th class="px-6 py-3">Fecha</th>
+                        <th class="px-6 py-3 text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium text-gray-900">1</td>
+                        <td class="px-6 py-4">Actividad 1 - Descripción corta</td>
+                        <td class="px-6 py-4">OAPI</td>
+                        <td class="px-6 py-4">2025</td>
+                        <td class="px-6 py-4">1</td>
+                        <td class="px-6 py-4">100</td>
+                        <td class="px-6 py-4">$5,000</td>
+                        <td class="px-6 py-4"><a class="text-[var(--primary-color)] hover:underline" href="#">Ver</a></td>
+                        <td class="px-6 py-4">Usuario 1</td>
+                        <td class="px-6 py-4">2025-01-15</td>
+                        <td class="px-6 py-4 text-center">
+                          <button class="p-2 text-gray-500 hover:text-[var(--primary-color)]"><span class="material-symbols-outlined">visibility</span></button>
+                          <button class="p-2 text-gray-500 hover:text-yellow-500"><span class="material-symbols-outlined">edit</span></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <nav aria-label="Table navigation" class="flex items-center justify-between pt-4">
+                  <span class="text-sm font-normal text-gray-500">Mostrando <span class="font-semibold text-gray-900">1-1</span> de <span class="font-semibold text-gray-900">1</span></span>
+                  <ul class="inline-flex -space-x-px text-sm h-8">
+                    <li><a class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg" href="#">Anterior</a></li>
+                    <li><a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg" href="#">Siguiente</a></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import '../lib/session-guard.js';
+    import { renderSidebar } from '../lib/sidebar-component.js';
+    try { renderSidebar('#shared-sidebar'); } catch (e) { console.warn('renderSidebar failed', e); }
+  </script>
+
+  <script src="../pages_scripts/avance.js"></script>
+
+</body>
+</html>

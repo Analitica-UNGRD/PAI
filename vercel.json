@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "echo 'No build step'",
-  "outputDirectory": "public",
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index.js" },
-    { "source": "/dashboard", "destination": "/dashboard.html" },
-    { "source": "/actividades", "destination": "/actividades.html" },
-    { "source": "/avance", "destination": "/avance.html" },
-    { "source": "/login", "destination": "/login.html" }
+    { "source": "/$", "destination": "/src/pages/login.html" },
+    { "source": "/dashboard", "destination": "/src/pages/dashboard.html" },
+    { "source": "/actividades", "destination": "/src/pages/actividades.html" },
+    { "source": "/avance", "destination": "/src/pages/avance.html" },
+    { "source": "/login", "destination": "/src/pages/login.html" },
+    { "source": "^/lib/(.*)", "destination": "/src/lib/$1" },
+    { "source": "^/styles/(.*)", "destination": "/src/styles/$1" },
+    { "source": "^/assets/(.*)", "destination": "/src/assets/$1" },
+    { "source": "^/pages_scripts/(.*)", "destination": "/src/pages_scripts/$1" }
   ]
 }

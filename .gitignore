@@ -34,5 +34,8 @@ build/
 local-api-proxy.js
 mock-auth-server.js
 
+# Generated public directory (not needed for version control)
+public/
+
 # Do NOT upload README yet
 README.md

@@ -1,0 +1,310 @@
+/* Estilos específicos para la página de Actividades
+   Mejoras visuales para formularios y tablas de gestión de actividades */
+
+/* ==================== FORMULARIO ACTIVIDADES ==================== */
+
+/* Animación suave para mostrar/ocultar formulario */
+#form-actividad {
+  transition: all 300ms cubic-bezier(.23,.95,.44,1);
+  transform-origin: top center;
+}
+
+#form-actividad.hidden {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.98);
+}
+
+/* Mejoras visuales del formulario */
+#form-actividad {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Campos requeridos */
+label span.text-red-500 {
+  font-weight: 600;
+}
+
+/* Inputs y selects con mejor estilo */
+#actividad-form input[type="text"],
+#actividad-form input[type="number"],
+#actividad-form input[type="date"],
+#actividad-form select,
+#actividad-form textarea {
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+#actividad-form input[type="text"]:focus,
+#actividad-form input[type="number"]:focus,
+#actividad-form input[type="date"]:focus,
+#actividad-form select:focus,
+#actividad-form textarea:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Textarea específico para descripción */
+#descripcion_actividad {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Botones del formulario */
+#form-actividad button[type="submit"] {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  transition: all 200ms ease;
+}
+
+#form-actividad button[type="submit"]:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #5b21b6 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+#form-actividad button[type="button"] {
+  transition: all 200ms ease;
+}
+
+#form-actividad button[type="button"]:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+/* ==================== TABLA ACTIVIDADES ==================== */
+
+/* Hover mejorado para filas */
+#tabla-actividades tr:hover {
+  background-color: #f8fafc;
+  transition: background-color 150ms ease;
+}
+
+/* Botones de acción en tabla */
+#tabla-actividades button {
+  transition: all 150ms ease;
+  border-radius: 4px;
+}
+
+#tabla-actividades button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+/* Indicadores de estado */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Estados específicos */
+.estado-planeado {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+.estado-en-ejecucion {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+}
+
+.estado-cerrado {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+}
+
+.estado-cancelado {
+  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+  color: #991b1b;
+}
+
+/* ==================== FILTROS ==================== */
+
+/* Contenedor de filtros */
+.filtros-container {
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Selects de filtro */
+#filtro-area,
+#filtro-estado,
+#filtro-plan {
+  font-size: 14px;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+#filtro-area:focus,
+#filtro-estado:focus,
+#filtro-plan:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+/* Botón limpiar filtros */
+#btn-limpiar-filtros {
+  transition: all 200ms ease;
+}
+
+#btn-limpiar-filtros:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+/* ==================== ELEMENTOS VACÍOS ==================== */
+
+/* Estado vacío de tabla */
+#tabla-actividades tr td[colspan] .material-symbols-outlined {
+  opacity: 0.3;
+  font-size: 48px;
+}
+
+/* ==================== ANIMACIONES Y MICROINTERACCIONES ==================== */
+
+/* Animación para nuevos elementos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 300ms cubic-bezier(.23,.95,.44,1);
+}
+
+/* Feedback visual para acciones */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.pulse {
+  animation: pulse 200ms ease-in-out;
+}
+
+/* ==================== RESPONSIVO ==================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  #actividad-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  #actividad-form .lg\:col-span-3 {
+    grid-column: 1 / -1;
+  }
+  
+  #actividad-form .lg\:col-span-2 {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  #actividad-form {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Tabla responsive */
+  .tabla-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #tabla-actividades th,
+  #tabla-actividades td {
+    min-width: 120px;
+    white-space: nowrap;
+  }
+  
+  /* Ocultar columnas menos importantes en móvil */
+  @media (max-width: 640px) {
+    #tabla-actividades th:nth-child(7),
+    #tabla-actividades td:nth-child(7) {
+      display: none;
+    }
+  }
+}
+
+/* ==================== UTILIDADES ESPECÍFICAS ==================== */
+
+/* Loader/spinner para operaciones async */
+.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Validación visual */
+.campo-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.campo-valido {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Tooltips simples */
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #374151;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 10;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
