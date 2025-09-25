@@ -2,6 +2,10 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "src/**/*", "use": "@vercel/static" }
+  ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.js" },
     { "src": "/$", "dest": "/src/pages/login.html" },
@@ -9,9 +13,6 @@
     { "src": "/actividades", "dest": "/src/pages/actividades.html" },
     { "src": "/avance", "dest": "/src/pages/avance.html" },
     { "src": "/login", "dest": "/src/pages/login.html" },
-    
-    { "src": "/actividades/(.*)", "status": 404, "dest": "/src/pages/actividades.html" },
-    { "src": "/avance/(.*)", "status": 404, "dest": "/src/pages/avance.html" },
     
     { "src": "/src/lib/(.*)", "dest": "/src/lib/$1" },
     { "src": "/src/styles/(.*)", "dest": "/src/styles/$1" },
