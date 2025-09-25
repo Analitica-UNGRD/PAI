@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.js": {
-      "memory": 128,
-      "maxDuration": 10
-    }
-  },
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/", "destination": "/src/pages/login.html" },
-    { "source": "/dashboard", "destination": "/src/pages/dashboard.html" },
-    { "source": "/actividades", "destination": "/src/pages/actividades.html" },
-    { "source": "/avance", "destination": "/src/pages/avance.html" },
-    { "source": "/login", "destination": "/src/pages/login.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/$", "dest": "/src/pages/login.html" },
+    { "src": "/dashboard", "dest": "/src/pages/dashboard.html" },
+    { "src": "/actividades", "dest": "/src/pages/actividades.html" },
+    { "src": "/avance", "dest": "/src/pages/avance.html" },
+    { "src": "/login", "dest": "/src/pages/login.html" },
+    
+    { "src": "/src/styles/(.*)", "dest": "/src/styles/$1" },
+    { "src": "/src/lib/(.*)", "dest": "/src/lib/$1" },
+    { "src": "/src/assets/(.*)", "dest": "/src/assets/$1" },
+    { "src": "/src/pages_scripts/(.*)", "dest": "/src/pages_scripts/$1" }
   ]
 }
