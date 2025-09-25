@@ -1,12 +1,18 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/$", "dest": "/src/pages/login.html" },
-    { "src": "^/lib/(.*)", "dest": "/src/lib/$1" },
-    { "src": "^/styles/(.*)", "dest": "/src/styles/$1" },
-    { "src": "^/assets/(.*)", "dest": "/src/assets/$1" },
-    { "src": "^/pages_scripts/(.*)", "dest": "/src/pages_scripts/$1" },
+    { "src": "/$", "dest": "/public/index.html" },
+    { "src": "^/lib/(.*)", "dest": "/public/lib/$1" },
+    { "src": "^/styles/(.*)", "dest": "/public/styles/$1" },
+    { "src": "^/assets/(.*)", "dest": "/public/assets/$1" },
+    { "src": "^/pages_scripts/(.*)", "dest": "/public/pages_scripts/$1" },
+    { "src": "^/dashboard$", "dest": "/public/dashboard.html" },
+    { "src": "^/actividades$", "dest": "/public/actividades.html" },
+    { "src": "^/avance$", "dest": "/public/avance.html" },
+    { "src": "^/login$", "dest": "/public/login.html" },
+    { "src": "^/api(/?.*)", "dest": "/api/index.js" },
     { "src": "^/src/(.*)", "dest": "/src/$1" },
-    { "src": "^/(.*)", "dest": "/src/pages/$1" }
+    { "src": "^/(.*)\\.html$", "dest": "/public/$1.html" },
+    { "src": "^/(.*)", "dest": "/public/$1" }
   ]
 }
