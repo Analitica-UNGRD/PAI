@@ -1,15 +1,34 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index.js" },
-    { "source": "/$", "destination": "/src/pages/login.html" },
-    { "source": "/dashboard", "destination": "/src/pages/dashboard.html" },
-    { "source": "/actividades", "destination": "/src/pages/actividades.html" },
-    { "source": "/avance", "destination": "/src/pages/avance.html" },
-    { "source": "/login", "destination": "/src/pages/login.html" },
-    { "source": "^/lib/(.*)", "destination": "/src/lib/$1" },
-    { "source": "^/styles/(.*)", "destination": "/src/styles/$1" },
-    { "source": "^/assets/(.*)", "destination": "/src/assets/$1" },
-    { "source": "^/pages_scripts/(.*)", "destination": "/src/pages_scripts/$1" }
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/$", "dest": "/src/pages/login.html" },
+    { "src": "/dashboard", "dest": "/src/pages/dashboard.html" },
+    { "src": "/actividades", "dest": "/src/pages/actividades.html" },
+    { "src": "/avance", "dest": "/src/pages/avance.html" },
+    { "src": "/login", "dest": "/src/pages/login.html" },
+    
+    { "src": "/actividades/(.*)", "status": 404, "dest": "/src/pages/actividades.html" },
+    { "src": "/avance/(.*)", "status": 404, "dest": "/src/pages/avance.html" },
+    
+    { "src": "/src/lib/(.*)", "dest": "/src/lib/$1" },
+    { "src": "/src/styles/(.*)", "dest": "/src/styles/$1" },
+    { "src": "/src/assets/(.*)", "dest": "/src/assets/$1" },
+    { "src": "/src/pages_scripts/(.*)", "dest": "/src/pages_scripts/$1" },
+    
+    { "src": "/lib/(.*)", "dest": "/src/lib/$1" },
+    { "src": "/styles/(.*)", "dest": "/src/styles/$1" },
+    { "src": "/assets/(.*)", "dest": "/src/assets/$1" },
+    { "src": "/pages_scripts/(.*)", "dest": "/src/pages_scripts/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "s-maxage=1, stale-while-revalidate" }
+      ]
+    }
   ]
 }

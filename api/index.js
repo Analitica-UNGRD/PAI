@@ -32,7 +32,10 @@ module.exports = async (req, res) => {
       return res.end(JSON.stringify({ success: false, error: 'Request body must be JSON and include a "path" property' }));
     }
 
-    const target = process.env.APPS_SCRIPT_URL;
+    // Usar la variable de entorno APPS_SCRIPT_URL o un valor predeterminado de config.js
+    const defaultUrl = 'https://script.google.com/macros/s/AKfycbxBj5ae8whf6pg2pY588V-TecItxK6fz5j5lBXLHFRUXHLHhPYEVisygRwhMCN6ogRoUw/exec';
+    const target = process.env.APPS_SCRIPT_URL || defaultUrl;
+    
     if (!target) {
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
