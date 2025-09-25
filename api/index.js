@@ -2,6 +2,7 @@
 // - Adds CORS headers so the browser can call it directly
 // - Forwards the request body to the configured Apps Script (or other target)
 // - Use environment variable APPS_SCRIPT_URL to set the real target in production
+// - Updated for new deployment
 
 // This file is CommonJS so Vercel will pick it up as a Serverless Function.
 
