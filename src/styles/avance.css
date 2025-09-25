@@ -1,0 +1,30 @@
+/* Estilos específicos para la página de Avances */
+
+/* Reusar variables globales si están definidas */
+:root {
+  --avance-accent: var(--primary-color, #137fec);
+}
+
+.avance-filters .field {
+  margin-bottom: 0.75rem;
+}
+
+.table-avances a {
+  color: var(--avance-accent);
+  text-decoration: none;
+}
+
+.table-avances a:hover {
+  text-decoration: underline;
+}
+
+/* Botón de exportar */
+.export-avances-btn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #374151;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.export-avances-btn:hover { background: #f8fafc; }

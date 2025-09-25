@@ -1,0 +1,19 @@
+{
+  "name": "sisco-pai",
+  "version": "1.0.0",
+  "description": "Sistema Integral de Seguimiento Contractual OAPI",
+  "private": true,
+  "scripts": {
+    "dev": "npx http-server -c-1 -p 3000",
+    "start": "npx http-server -c-1 -p 8080",
+    "build": "echo 'Static HTML - no build step needed'"
+  },
+  "keywords": ["login","auth","mock","sisco"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.0.0",
+    "cross-env": "^7.0.3",
+    "http-server": "^14.1.1"
+  }
+}
