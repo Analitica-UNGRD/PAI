@@ -1,0 +1,55 @@
+/* Layout helpers for full-screen app with adjustable sidebar
+   - Uses CSS variables to let JS control the sidebar width via :root or body classes
+   - Provides a responsive two-column grid where the left column is the sidebar and the right fills the rest
+*/
+:root{
+  --sidebar-width: 64px; /* default collapsed */
+  --sidebar-expanded-width: 16rem; /* same as sidebar.css */
+}
+
+/* Prevent a horizontal scrollbar when sidebar expands — content should scroll inside main instead */
+html, body { overflow-x: hidden; }
+
+/* When the body has the sidebar-expanded class, update the sidebar width variable */
+body.sidebar-expanded{
+  --sidebar-width: var(--sidebar-expanded-width);
+}
+
+/* Container used by pages that include the shared sidebar */
+
+.layout-with-sidebar{
+  /* Keep a simple block layout; the fixed sidebar occupies the left edge, main reserves space with margin-left */
+  display: block;
+  min-height: 100vh; /* use full viewport height now that header is removed */
+  width: 100%;
+}
+
+/* Ensure the main area fills the viewport height and can scroll independently */
+.layout-with-sidebar{
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  /* we still set grid columns, but animate main with transform for smoother GPU-driven motion */
+  min-height: 100vh;
+  width: 100%;
+}
+
+.layout-with-sidebar main{
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  /* Reserve space for the fixed sidebar using the collapsed width so opening the sidebar
+    only nudges the content slightly via --sidebar-offset instead of shifting the whole page. */
+  margin-left: var(--sidebar-collapsed-w, 64px);
+  transform: translateX(var(--sidebar-offset, 0px));
+  transition: transform 260ms cubic-bezier(.2,.8,.2,1), margin-left 260ms cubic-bezier(.2,.8,.2,1), padding 220ms ease;
+  will-change: transform, margin-left;
+}
+
+/* When JS wants the page to treat the sidebar as pinned (persisted), add a class to body for visual adjustments */
+body.sidebar-pinned aside.sidebar{ box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
+
+@media (max-width: 768px){
+  /* On small screens, hide sidebar by default and stack content */
+  .layout-with-sidebar{ grid-template-columns: 0 1fr; }
+  aside.sidebar{ display:none; }
+}

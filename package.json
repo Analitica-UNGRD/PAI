@@ -1,0 +1,20 @@
+{
+  "name": "login-predeterminado",
+  "version": "1.0.0",
+  "description": "Login predeterminado (SISCO) - demo local con mock auth server",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "npx http-server -c-1 -p 8080",
+    "serve": "npx http-server -c-1 -p 8080",
+    "preview": "npx vercel dev",
+    "test": "echo \"run tests here\" && exit 0"
+  },
+  "keywords": ["login","auth","mock","sisco"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.0.0",
+    "cross-env": "^7.0.3",
+    "http-server": "^14.1.1"
+  }
+}

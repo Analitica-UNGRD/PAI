@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/$", "dest": "/src/pages/login.html" },
+    { "src": "^/lib/(.*)", "dest": "/src/lib/$1" },
+    { "src": "^/styles/(.*)", "dest": "/src/styles/$1" },
+    { "src": "^/assets/(.*)", "dest": "/src/assets/$1" },
+    { "src": "^/pages_scripts/(.*)", "dest": "/src/pages_scripts/$1" },
+    { "src": "^/src/(.*)", "dest": "/src/$1" },
+    { "src": "^/(.*)", "dest": "/src/pages/$1" }
+  ]
+}
