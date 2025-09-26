@@ -13,7 +13,7 @@
                        "dest":  "/pages/login.html"
                    },
                    {
-                       "src":  "/(login|dashboard|actividades|avance)\\.html",
+                       "src":  "/(login|dashboard|actividades|avance|admin)\\.html",
                        "dest":  "/pages/$1.html"
                    },
                    {
@@ -27,6 +27,10 @@
                    {
                        "src":  "/avance",
                        "dest":  "/pages/avance.html"
+                   },
+                   {
+                       "src":  "/admin",
+                       "dest":  "/pages/admin.html"
                    },
                    {
                        "src":  "/login",

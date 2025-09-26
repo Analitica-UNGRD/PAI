@@ -171,13 +171,17 @@
     </div>
   </div>
 
+  <script type="module" src="../lib/loader.js"></script>
+
   <script type="module">
     import '../lib/session-guard.js';
     import { renderSidebar } from '../lib/sidebar-component.js';
     try { renderSidebar('#shared-sidebar'); } catch (e) { console.warn('renderSidebar failed', e); }
   </script>
 
-  <script src="../pages_scripts/avance.js"></script>
+  <script type="module" src="../pages_scripts/avance.js"></script>
 
 </body>
 </html>
+
+

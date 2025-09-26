@@ -32,6 +32,37 @@ export function renderSidebar(target, options = {}) {
   aside.className = 'sidebar collapsed flex-shrink-0 text-gray-300';
   aside.setAttribute('aria-expanded','false');
 
+  const isHtmlMode = (() => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname || '';
+    return path.endsWith('.html') || path.includes('/src/');
+  })();
+  const htmlBase = (() => {
+    if (typeof window === 'undefined') return '/';
+    if (!isHtmlMode) return '/';
+    const path = window.location.pathname || '/';
+    const idx = path.lastIndexOf('/');
+    return idx >= 0 ? path.slice(0, idx + 1) : '/';
+  })();
+  const resolvePageHref = (page) => {
+    if (typeof window === 'undefined') {
+      return page === 'login' ? '/login' : `/${page}`;
+    }
+    if (isHtmlMode) {
+      const target = page === 'login' ? 'login.html' : `${page}.html`;
+      return new URL(target, window.location.origin + htmlBase).href;
+    }
+    const target = page === 'login' ? '/login' : `/${page}`;
+    return new URL(target, window.location.origin).href;
+  };
+
+  const navItems = [
+    { section: 'dashboard', page: 'dashboard', icon: 'dashboard', label: 'Dashboard' },
+    { section: 'actividades', page: 'actividades', icon: 'assignment', label: 'Actividades' },
+    { section: 'avance', page: 'avance', icon: 'trending_up', label: 'Avance' },
+    { section: 'admin', page: 'admin', icon: 'admin_panel_settings', label: 'Admin' }
+  ];
+
   aside.innerHTML = `
     <div class="sidebar-inner">
       <div class="p-6">
@@ -39,10 +70,13 @@ export function renderSidebar(target, options = {}) {
       </div>
       <nav class="mt-6">
         <ul>
-          <li class="px-6 py-3" data-section="dashboard"><a class="flex items-center" href="/dashboard"><span class="material-icons">dashboard</span><span class="ml-4 menu-label">Dashboard</span></a></li>
-          <li class="px-6 py-3" data-section="actividades"><a class="flex items-center" href="/actividades"><span class="material-icons">assignment</span><span class="ml-4 menu-label">Actividades</span></a></li>
-          <li class="px-6 py-3" data-section="avance"><a class="flex items-center" href="/avance"><span class="material-icons">trending_up</span><span class="ml-4 menu-label">Avance</span></a></li>
-          <li class="px-6 py-3" data-section="admin"><a class="flex items-center" href="#"><span class="material-icons">admin_panel_settings</span><span class="ml-4 menu-label">Admin</span></a></li>
+          ${navItems.map(item => `
+            <li class="px-6 py-3" data-section="${item.section}">
+              <a class="flex items-center" data-page="${item.page}" href="#">
+                <span class="material-icons">${item.icon}</span>
+                <span class="ml-4 menu-label">${item.label}</span>
+              </a>
+            </li>`).join('')}
         </ul>
       </nav>
       <div class="bottom-area">
@@ -68,6 +102,17 @@ export function renderSidebar(target, options = {}) {
   container.appendChild(aside);
   container.dataset.sidebarRendered = '1';
 
+  const loginHref = resolvePageHref('login');
+  aside.querySelectorAll('a[data-page]').forEach((anchor) => {
+    const page = anchor.getAttribute('data-page');
+    anchor.href = resolvePageHref(page);
+  });
+
+
+  const goToLogin = () => {
+    try { window.location.replace(loginHref); } catch (err) { window.location.href = loginHref; }
+  };
+
   try { initSidebar(aside); } catch(e) { console.warn('initSidebar failed', e); }
 
   // logout wiring: prefer provided handler, then window.Auth.logout(), then fallback to redirect
@@ -80,8 +125,8 @@ export function renderSidebar(target, options = {}) {
           if (options.logoutHandler && typeof options.logoutHandler === 'function') {
             const res = options.logoutHandler();
             // Si devuelve una promesa, esperar
-            if (res && typeof res.then === 'function') res.then(() => { try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; } });
-            else { try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; } }
+            if (res && typeof res.then === 'function') res.then(() => { goToLogin(); });
+            else { goToLogin(); }
             return;
           }
 
@@ -89,9 +134,9 @@ export function renderSidebar(target, options = {}) {
           if (window.Auth && typeof window.Auth.logout === 'function') {
             const rtn = window.Auth.logout();
             if (rtn && typeof rtn.then === 'function') {
-              rtn.then(() => { try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; } });
+              rtn.then(() => { goToLogin(); });
             } else {
-              try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; }
+              goToLogin();
             }
             return;
           }
@@ -109,12 +154,12 @@ export function renderSidebar(target, options = {}) {
               } catch (err) {
                 // ignore import or logout errors
               }
-              try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; }
+              goToLogin();
             })();
           } catch(e) {
-            try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; }
+            goToLogin();
           }
-        } catch (e) { console.warn('Logout handler failed', e); try { window.location.replace('./login.html'); } catch(e) { window.location.href = './login.html'; } }
+        } catch (e) { console.warn('Logout handler failed', e); goToLogin(); }
       });
     }
   } catch (e) { /* noop */ }
@@ -131,3 +176,9 @@ if(typeof document !== 'undefined') {
     } catch(e) {}
   });
 }
+
+
+
+
+
+

@@ -1,9 +1,11 @@
-// Script para la página de Avances
-// Usa la misma estrategia de conexión al backend que `actividades.js`:
-// - En desarrollo usa el proxy local (http://localhost:3000/api)
-// - En producción usa la URL del Apps Script
+import { showLoaderDuring } from '../lib/loader.js';
 
-// Copiar lógica mínima para resolver backend y llamar al script (compatible con local proxy)
+// Script para la pÃ¡gina de Avances
+// Usa la misma estrategia de conexiÃ³n al backend que `actividades.js`:
+// - En desarrollo usa el proxy local (http://localhost:3000/api)
+// - En producciÃ³n usa la URL del Apps Script
+
+// Copiar lÃ³gica mÃ­nima para resolver backend y llamar al script (compatible con local proxy)
 const DEFAULT_APPS_SCRIPT = (typeof window !== 'undefined' && window.APP_CONFIG && window.APP_CONFIG.APPS_SCRIPT_URL)
   ? window.APP_CONFIG.APPS_SCRIPT_URL
   : 'https://script.google.com/macros/s/AKfycbxBj5ae8whf6pg2pY588V-TecItxK6fz5j5lBXLHFRUXHLHhPYEVisygRwhMCN6ogRoUw/exec';
@@ -66,8 +68,8 @@ const CONFIG_BACKEND = {
 };
 
 /**
- * Obtener email del usuario actual — helper local que replica la lógica de `actividades.js`.
- * Intenta usar window.obtenerEmailUsuarioActual si está disponible, si no mira localStorage (auth_email, auth_token)
+ * Obtener email del usuario actual â helper local que replica la lÃ³gica de `actividades.js`.
+ * Intenta usar window.obtenerEmailUsuarioActual si estÃ¡ disponible, si no mira localStorage (auth_email, auth_token)
  */
 function obtenerEmailUsuarioActualLocal() {
   try {
@@ -130,12 +132,11 @@ async function llamarBackend(path, payload = {}) {
     }
   };
 
-  const loader = (typeof window !== 'undefined' && window.APP_LOADER && typeof window.APP_LOADER.showLoaderDuring === 'function') ? window.APP_LOADER : null;
-  if (loader) {
-    return await loader.showLoaderDuring(exec(), obtenerMensajeLoader(path), 'solid');
-  }
+  const loaderFn = (typeof window !== 'undefined' && window.APP_LOADER && typeof window.APP_LOADER.showLoaderDuring === 'function')
+    ? window.APP_LOADER.showLoaderDuring.bind(window.APP_LOADER)
+    : showLoaderDuring;
 
-  return exec();
+  return loaderFn(exec, obtenerMensajeLoader(path), 'solid', 350);
 }
 
 function obtenerMensajeLoader(path) {
@@ -145,7 +146,7 @@ function obtenerMensajeLoader(path) {
     if (p.includes('crear')) return 'Guardando avance...';
     if (p.includes('actualizar')) return 'Actualizando avance...';
     if (p.includes('eliminar')) return 'Eliminando avance...';
-    if (p.includes('obtener') || p.includes('get') || p.includes('buscar')) return 'Cargando informaci�n desde el servidor...';
+    if (p.includes('obtener') || p.includes('get') || p.includes('buscar')) return 'Cargando información desde el servidor...';
     return 'Procesando...';
   } catch (error) {
     return 'Procesando...';
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // Llamar al backend con la ruta que actividades.js utiliza
       const response = await llamarBackend('actividades/obtener', { incluir_catalogos: true });
-      if (!response || !response.success) throw new Error(response && response.error ? response.error : 'Respuesta inválida');
+      if (!response || !response.success) throw new Error(response && response.error ? response.error : 'Respuesta invÃ¡lida');
       const items = response.data || [];
       actividadSelect.innerHTML = '<option value="">-- Seleccionar actividad --</option>';
       items.forEach(item => {
@@ -273,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (avanceIdInput) avanceIdInput.value = savedId;
         }
 
-        // Mostrar detalles al usuario (útil en debugging)
+        // Mostrar detalles al usuario (Ãºtil en debugging)
         try {
           alert('Avance guardado correctamente. ID: ' + (saved.avance_id || saved.id || 'n/a'));
         } catch (e) { /* ignore */ }
@@ -296,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err) {
         console.error('Error guardando avance:', err);
-        alert('Error guardando avance. Revisa la consola para más detalles.');
+        alert('Error guardando avance. Revisa la consola para mÃ¡s detalles.');
       } finally {
         if (btn) { btn.disabled = false; btn.innerHTML = origHtml; }
       }

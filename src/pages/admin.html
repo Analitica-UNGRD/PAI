@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PAI 2025 - Administración</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #f0f2f4;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --background-color: #f9fafb;
+    }
+    body {
+      font-family: 'Inter', 'Roboto', sans-serif;
+    }
+    details[open] summary .chevron {
+      transform: rotate(90deg);
+    }
+    .chevron {
+      transition: transform 0.2s ease;
+    }
+  </style>
+  <link rel="stylesheet" href="../styles/sidebar.css">
+  <link rel="stylesheet" href="../styles/layout.css">
+</head>
+<body class="bg-[var(--background-color)]">
+  <div class="h-full min-h-screen w-full flex-col">
+    <div class="flex-1">
+      <div class="layout-with-sidebar">
+        <div id="shared-sidebar" class="hidden md:block"></div>
+        <main class="p-4 sm:p-6 md:p-8">
+          <div class="mx-auto max-w-7xl space-y-8">
+            <header class="flex flex-col gap-2">
+              <p class="text-sm uppercase tracking-wider text-indigo-600">Centro de Administración</p>
+              <h1 class="text-3xl font-bold text-[var(--text-primary)]">Herramientas de Gestión</h1>
+              <p class="text-[var(--text-secondary)] text-sm sm:text-base max-w-3xl">
+                Desde este panel puedes mantener sincronizados los catálogos de apoyo, actualizar actividades existentes
+                y revisar registros de avance sin salir del entorno de trabajo. Usa las secciones siguientes para acceder a cada módulo.
+              </p>
+            </header>
+
+            <details class="rounded-lg border border-gray-200 bg-white shadow-sm" open>
+              <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-6 py-4 text-lg font-semibold text-[var(--text-primary)]">
+                <div class="flex items-center gap-3">
+                  <span class="material-icons text-indigo-500">inventory_2</span>
+                  Catálogo unificado
+                </div>
+                <span class="material-icons chevron text-gray-500">chevron_right</span>
+              </summary>
+              <div class="border-t border-gray-100 p-6 space-y-6">
+                <section class="space-y-4">
+                  <h2 class="text-xl font-semibold text-[var(--text-primary)]">Gestión del catálogo</h2>
+                  <p class="text-sm text-[var(--text-secondary)] max-w-3xl">
+                    Carga, crea o edita las entradas del catálogo unificado (áreas, subprocesos, estrategias, indicadores, etc.).
+                    Los cambios se reflejan directamente sobre la hoja de cálculo conectada al backend.
+                  </p>
+                  <div class="grid gap-4 lg:grid-cols-[280px,1fr]">
+                    <div class="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                      <label class="block text-sm font-medium text-[var(--text-secondary)]" for="catalogo-tipo">
+                        Tipo de catálogo
+                      </label>
+                      <select id="catalogo-tipo" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <option value="">Selecciona tipo...</option>
+                        <option value="area">Áreas</option>
+                        <option value="subproceso">Subprocesos</option>
+                        <option value="objetivo">Objetivos estratégicos</option>
+                        <option value="estrategia">Estrategias</option>
+                        <option value="linea">Líneas</option>
+                        <option value="indicador">Indicadores</option>
+                        <option value="plan">Planes</option>
+                        <option value="fuente">Fuentes de financiación</option>
+                        <option value="bimestre">Bimestres</option>
+                        <option value="mipg">Dimensiones MIPG</option>
+                      </select>
+                      <button id="catalogo-refrescar" class="flex w-full items-center justify-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-600">
+                        <span class="material-icons text-base">refresh</span>
+                        Cargar catálogo
+                      </button>
+                    </div>
+                    <div class="space-y-4">
+                      <div class="flex flex-wrap items-center justify-between gap-3">
+                        <h3 class="text-lg font-semibold text-[var(--text-primary)]">Listado</h3>
+                        <div class="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+                          <span id="catalogo-contador">0 elementos</span>
+                          <button id="catalogo-exportar" class="inline-flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition hover:border-indigo-300 hover:text-indigo-600">
+                            <span class="material-icons text-sm">download</span>
+                            Exportar JSON
+                          </button>
+                        </div>
+                      </div>
+                      <div class="overflow-x-auto rounded-lg border border-gray-200">
+                        <table class="min-w-full divide-y divide-gray-200 text-sm" id="catalogo-tabla">
+                          <thead class="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                            <tr>
+                              <th class="px-4 py-2 text-left">Codigo</th>
+                              <th class="px-4 py-2 text-left">Nombre</th>
+                              <th class="px-4 py-2 text-left">Padre</th>
+                              <th class="px-4 py-2 text-left">Orden</th>
+                              <th class="px-4 py-2 text-left">Estado</th>
+                              <th class="px-4 py-2 text-left">Actualizado</th>
+                              <th class="px-4 py-2 text-right">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody class="divide-y divide-gray-200 bg-white" id="catalogo-tabla-body">
+                            <tr>
+                              <td colspan="7" class="px-4 py-6 text-center text-sm text-gray-500">
+                                Selecciona un tipo y presiona "Cargar catalogo".
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="rounded-lg border border-gray-200 bg-gray-50 p-6">
+                  <form id="catalogo-form" class="grid gap-4 md:grid-cols-2">
+                    <input type="hidden" id="catalogo-id" />
+                    <div class="md:col-span-2 flex items-center justify-between">
+                      <h3 class="text-lg font-semibold text-[var(--text-primary)]" id="catalogo-form-titulo">Agregar entrada</h3>
+                      <button type="button" id="catalogo-form-reset" class="flex items-center gap-2 rounded-md border border-transparent px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-indigo-600">
+                        <span class="material-icons text-base">restart_alt</span>
+                        Limpiar
+                      </button>
+                    </div>
+                    <div class="md:col-span-2 grid gap-3 md:grid-cols-2">
+                      <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="catalogo-id-display">Identificador</label>
+                        <input id="catalogo-id-display" type="text" readonly value="Nuevo (auto)" class="mt-1 w-full rounded-md border-gray-200 bg-gray-100 text-sm shadow-sm" />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="catalogo-updated-at">Ultima actualizacion</label>
+                        <input id="catalogo-updated-at" type="text" readonly class="mt-1 w-full rounded-md border-gray-200 bg-gray-100 text-sm shadow-sm" placeholder="Pendiente" />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="catalogo-code">Codigo</label>
+                      <input id="catalogo-code" name="code" type="text" required class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ej. AREA_01" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="catalogo-label">Nombre</label>
+                      <input id="catalogo-label" name="label" type="text" required class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Nombre descriptivo" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="catalogo-parent">Codigo padre (opcional)</label>
+                      <input id="catalogo-parent" name="parent_code" type="text" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Relaciona jerarquia" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="catalogo-sort-order">Orden</label>
+                      <input id="catalogo-sort-order" name="sort_order" type="number" min="0" step="1" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Auto" />
+                    </div>
+                    <div class="md:col-span-2 flex items-center gap-2">
+                      <input id="catalogo-activo" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-[var(--primary-color)] focus:ring-indigo-500" checked />
+                      <label for="catalogo-activo" class="text-sm text-[var(--text-secondary)]">Activo</label>
+                    </div>
+                    <div class="md:col-span-2 flex flex-wrap items-center justify-between gap-3">
+                      <div class="text-xs text-[var(--text-secondary)]" id="catalogo-form-status"></div>
+                      <div class="flex gap-3">
+                        <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-600">
+                          <span class="material-icons text-base">save</span>
+                          Guardar cambios
+                        </button>
+                        <button type="button" id="catalogo-eliminar" class="hidden items-center gap-2 rounded-md border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-500 shadow-sm transition hover:border-red-300 hover:text-red-600">
+                          <span class="material-icons text-base">delete</span>
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            </details>
+
+            <details class="rounded-lg border border-gray-200 bg-white shadow-sm" id="panel-actividades">
+              <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-6 py-4 text-lg font-semibold text-[var(--text-primary)]">
+                <div class="flex items-center gap-3">
+                  <span class="material-icons text-indigo-500">fact_check</span>
+                  Administración de actividades
+                </div>
+                <span class="material-icons chevron text-gray-500">chevron_right</span>
+              </summary>
+              <div class="border-t border-gray-100 p-6 space-y-6">
+                <section class="space-y-4">
+                  <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h2 class="text-xl font-semibold text-[var(--text-primary)]">Actividades registradas</h2>
+                      <p class="text-sm text-[var(--text-secondary)]">Busca, edita o desactiva actividades del plan sin salir de este panel.</p>
+                    </div>
+                    <button id="actividades-recargar" class="inline-flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-600">
+                      <span class="material-icons text-base">refresh</span>
+                      Actualizar listado
+                    </button>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-3">
+                    <label class="text-sm font-medium text-[var(--text-secondary)]" for="actividades-buscar">Filtrar</label>
+                    <input id="actividades-buscar" type="search" placeholder="Por descripción, área o estado" class="flex-1 min-w-[220px] rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    <span class="text-xs text-[var(--text-secondary)]" id="actividades-resumen">0 actividades</span>
+                  </div>
+                  <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm" id="actividades-tabla">
+                      <thead class="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        <tr>
+                          <th class="px-3 py-2 text-left">Código</th>
+                          <th class="px-3 py-2 text-left">Descripción</th>
+                          <th class="px-3 py-2 text-left">Área</th>
+                          <th class="px-3 py-2 text-left">Estado</th>
+                          <th class="px-3 py-2 text-left">Responsable</th>
+                          <th class="px-3 py-2 text-right">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-200 bg-white" id="actividades-tabla-body">
+                        <tr>
+                          <td colspan="6" class="px-4 py-6 text-center text-sm text-gray-500">
+                            Presiona “Actualizar listado” para cargar las actividades.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <section class="rounded-lg border border-gray-200 bg-gray-50 p-6">
+                  <form id="actividades-form" class="grid gap-4 md:grid-cols-2">
+                    <input type="hidden" id="actividad-id" />
+                    <div class="md:col-span-2 flex items-center justify-between">
+                      <h3 class="text-lg font-semibold text-[var(--text-primary)]" id="actividad-form-titulo">Editar actividad seleccionada</h3>
+                      <div class="flex gap-2">
+                        <button type="button" id="actividad-limpiar" class="flex items-center gap-2 rounded-md border border-transparent px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-indigo-600">
+                          <span class="material-icons text-base">restart_alt</span>
+                          Limpiar
+                        </button>
+                        <a href="./actividades.html" target="_blank" class="inline-flex items-center gap-2 rounded-md border border-gray-200 px-3 py-1.5 text-xs font-semibold text-[var(--primary-color)] transition hover:border-indigo-300">
+                          <span class="material-icons text-base">open_in_new</span>
+                          Abrir gestor completo
+                        </a>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="actividad-codigo">Código</label>
+                      <input id="actividad-codigo" name="actividad_id" type="text" readonly class="mt-1 w-full rounded-md border-gray-200 bg-gray-100 text-sm shadow-sm" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="actividad-estado">Estado</label>
+                      <select id="actividad-estado" name="estado" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <option value="">Selecciona estado</option>
+                        <option value="Planeada">Planeada</option>
+                        <option value="En Progreso">En Progreso</option>
+                        <option value="Completada">Completada</option>
+                        <option value="Suspendida">Suspendida</option>
+                        <option value="Cancelada">Cancelada</option>
+                      </select>
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="actividad-descripcion">Descripción</label>
+                      <textarea id="actividad-descripcion" name="descripcion_actividad" rows="3" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="actividad-meta">Meta anual</label>
+                      <input id="actividad-meta" name="meta" type="text" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="actividad-responsable">Responsable</label>
+                      <input id="actividad-responsable" name="responsable" type="text" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="actividad-detalle">Datos completos (JSON opcional)</label>
+                      <textarea id="actividad-detalle" name="raw" rows="4" class="mt-1 w-full rounded-md border-gray-300 text-sm font-mono shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Pegue aquí la etiqueta completa si necesita enviar campos adicionales"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex flex-wrap items-center justify-between gap-3">
+                      <div class="text-xs text-[var(--text-secondary)]" id="actividad-form-status"></div>
+                      <div class="flex gap-3">
+                        <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-600">
+                          <span class="material-icons text-base">save</span>
+                          Guardar cambios
+                        </button>
+                        <button type="button" id="actividad-eliminar" class="hidden items-center gap-2 rounded-md border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-500 shadow-sm transition hover:border-red-300 hover:text-red-600">
+                          <span class="material-icons text-base">delete</span>
+                          Eliminar actividad
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            </details>
+
+            <details class="rounded-lg border border-gray-200 bg-white shadow-sm" id="panel-avances">
+              <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-6 py-4 text-lg font-semibold text-[var(--text-primary)]">
+                <div class="flex items-center gap-3">
+                  <span class="material-icons text-indigo-500">trending_up</span>
+                  Seguimiento de avances
+                </div>
+                <span class="material-icons chevron text-gray-500">chevron_right</span>
+              </summary>
+              <div class="border-t border-gray-100 p-6 space-y-6">
+                <section class="space-y-4">
+                  <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h2 class="text-xl font-semibold text-[var(--text-primary)]">Registros de avance</h2>
+                      <p class="text-sm text-[var(--text-secondary)]">Consulta y corrige reportes individuales enviados por los equipos.</p>
+                    </div>
+                    <button id="avances-recargar" class="inline-flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-600">
+                      <span class="material-icons text-base">refresh</span>
+                      Actualizar listado
+                    </button>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-3">
+                    <label class="text-sm font-medium text-[var(--text-secondary)]" for="avances-buscar">Filtrar</label>
+                    <input id="avances-buscar" type="search" placeholder="Por actividad, responsable o estado" class="flex-1 min-w-[220px] rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    <span class="text-xs text-[var(--text-secondary)]" id="avances-resumen">0 registros</span>
+                  </div>
+                  <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm" id="avances-tabla">
+                      <thead class="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        <tr>
+                          <th class="px-3 py-2 text-left">ID</th>
+                          <th class="px-3 py-2 text-left">Actividad</th>
+                          <th class="px-3 py-2 text-left">Bimestre</th>
+                          <th class="px-3 py-2 text-left">Responsable</th>
+                          <th class="px-3 py-2 text-left">Fecha</th>
+                          <th class="px-3 py-2 text-right">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-200 bg-white" id="avances-tabla-body">
+                        <tr>
+                          <td colspan="6" class="px-4 py-6 text-center text-sm text-gray-500">
+                            Presiona “Actualizar listado” para cargar los avances reportados.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <section class="rounded-lg border border-gray-200 bg-gray-50 p-6">
+                  <form id="avances-form" class="grid gap-4 md:grid-cols-2">
+                    <input type="hidden" id="avance-id" />
+                    <div class="md:col-span-2 flex items-center justify-between">
+                      <h3 class="text-lg font-semibold text-[var(--text-primary)]" id="avance-form-titulo">Editar avance seleccionado</h3>
+                      <div class="flex gap-2">
+                        <button type="button" id="avance-limpiar" class="flex items-center gap-2 rounded-md border border-transparent px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-indigo-600">
+                          <span class="material-icons text-base">restart_alt</span>
+                          Limpiar
+                        </button>
+                        <a href="./avance.html" target="_blank" class="inline-flex items-center gap-2 rounded-md border border-gray-200 px-3 py-1.5 text-xs font-semibold text-[var(--primary-color)] transition hover:border-indigo-300">
+                          <span class="material-icons text-base">open_in_new</span>
+                          Abrir panel de avances
+                        </a>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="avance-actividad">Actividad</label>
+                      <input id="avance-actividad" name="actividad_id" type="text" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="avance-bimestre">Bimestre</label>
+                      <input id="avance-bimestre" name="bimestre_id" type="text" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="avance-fecha">Fecha de reporte</label>
+                      <input id="avance-fecha" name="fecha_reporte" type="date" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="avance-reportado">Reportado por</label>
+                      <input id="avance-reportado" name="reportado_por" type="email" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]" for="avance-detalle">Detalle (JSON)</label>
+                      <textarea id="avance-detalle" name="raw" rows="4" class="mt-1 w-full rounded-md border-gray-300 text-sm font-mono shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Incluye progresso, dificultades u otra información adicional"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex flex-wrap items-center justify-between gap-3">
+                      <div class="text-xs text-[var(--text-secondary)]" id="avance-form-status"></div>
+                      <div class="flex gap-3">
+                        <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-600">
+                          <span class="material-icons text-base">save</span>
+                          Guardar avance
+                        </button>
+                        <button type="button" id="avance-eliminar" class="hidden items-center gap-2 rounded-md border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-500 shadow-sm transition hover:border-red-300 hover:text-red-600">
+                          <span class="material-icons text-base">delete</span>
+                          Eliminar avance
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            </details>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../lib/session-guard.js"></script>
+  <script type="module" src="../lib/sidebar-component.js"></script>
+  <script type="module" src="../lib/loader.js"></script>
+  <script type="module" src="../pages_scripts/admin.js"></script>
+</body>
+</html>
+
+
