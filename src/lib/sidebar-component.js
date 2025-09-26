@@ -39,9 +39,9 @@ export function renderSidebar(target, options = {}) {
       </div>
       <nav class="mt-6">
         <ul>
-          <li class="px-6 py-3" data-section="dashboard"><a class="flex items-center" href="/dashboard"><span class="material-icons">dashboard</span><span class="ml-4 menu-label">Dashboard</span></a></li>
-          <li class="px-6 py-3" data-section="actividades"><a class="flex items-center" href="/actividades"><span class="material-icons">assignment</span><span class="ml-4 menu-label">Actividades</span></a></li>
-          <li class="px-6 py-3" data-section="avance"><a class="flex items-center" href="/avance"><span class="material-icons">trending_up</span><span class="ml-4 menu-label">Avance</span></a></li>
+          <li class="px-6 py-3" data-section="dashboard"><a class="flex items-center" href="./dashboard.html"><span class="material-icons">dashboard</span><span class="ml-4 menu-label">Dashboard</span></a></li>
+          <li class="px-6 py-3" data-section="actividades"><a class="flex items-center" href="./actividades.html"><span class="material-icons">assignment</span><span class="ml-4 menu-label">Actividades</span></a></li>
+          <li class="px-6 py-3" data-section="avance"><a class="flex items-center" href="./avance.html"><span class="material-icons">trending_up</span><span class="ml-4 menu-label">Avance</span></a></li>
           <li class="px-6 py-3" data-section="admin"><a class="flex items-center" href="#"><span class="material-icons">admin_panel_settings</span><span class="ml-4 menu-label">Admin</span></a></li>
         </ul>
       </nav>
@@ -131,3 +131,4 @@ if(typeof document !== 'undefined') {
     } catch(e) {}
   });
 }
+
