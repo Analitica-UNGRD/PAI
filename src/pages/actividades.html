@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B600%3B700&amp;family=Roboto%3Awght%40300%3B400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<title>PAI 2025 - Actividades</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      :root {
+        --primary-color: #4f46e5;
+        --secondary-color: #f0f2f4;
+        --text-primary: #111827;
+        --text-secondary: #6b7280;
+        --background-color: #f9fafb;
+      }
+      body {
+        font-family: 'Roboto', 'Inter', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+<link rel="stylesheet" href="../styles/sidebar.css">
+<link rel="stylesheet" href="../styles/layout.css">
+<link rel="stylesheet" href="../styles/loader.css">
+<link rel="stylesheet" href="../styles/actividades.css">
+<!-- Bootstrap CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="bg-[var(--background-color)]">
+<div id="app-actividades" class="h-full min-h-screen w-full flex-col">
+<!-- Header removed: sidebar will act as main navigation and reach the top of the viewport -->
+<div class="flex-1">
+  <div class="layout-with-sidebar">
+    <div id="shared-sidebar" class="hidden md:block"></div>
+    <main class="p-4 sm:p-6 md:p-8">
+<div class="mx-auto max-w-7xl">
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+<h2 class="text-3xl font-bold text-[var(--text-primary)]">Gestión de Actividades</h2>
+<button id="btn-nueva-actividad" class="flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors">
+<span class="material-symbols-outlined"> add </span>
+              Nueva Actividad
+            </button>
+</div>
+
+<!-- Formulario para crear/editar actividades -->
+<div id="form-actividad" class="hidden mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+  <div class="mb-6 flex items-center justify-between">
+    <h3 class="text-xl font-semibold text-[var(--text-primary)]">
+      <span id="form-title">Nueva Actividad</span>
+    </h3>
+    <button id="btn-cerrar-form" class="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  
+  <form id="actividad-form" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <!-- Información básica -->
+    <div class="lg:col-span-3 space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-[var(--text-primary)] mb-1" for="descripcion_actividad">
+          Descripción de la Actividad <span class="text-red-500">*</span>
+        </label>
+        <p class="text-xs text-[var(--text-secondary)]">
+          Utiliza el siguiente generador para construir una descripción estandarizada con la estructura: 
+          <span class="font-medium">[Verbo] + [Objeto] + [Finalidad] + [Ubicación/beneficiarios] + [Temporalidad]</span>
+        </p>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-1" for="descripcion_verbo">
+              1. Verbo (infinitivo) <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="descripcion_verbo"
+              class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+              <option value="">Seleccionar verbo...</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Define el tipo de intervención</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-1" for="descripcion_objeto">
+              2. Objeto <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="descripcion_objeto"
+              class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+              <option value="">Seleccionar objeto...</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Qué se va a hacer específicamente</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-1" for="descripcion_finalidad">
+              3. Finalidad <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="descripcion_finalidad"
+              class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+              <option value="">Seleccionar finalidad...</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Resultado o cambio esperado</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-1" for="descripcion_beneficiarios">
+              4. Ubicación o beneficiarios <span class="text-red-500">*</span>
+            </label> 
+            <select
+              id="descripcion_beneficiarios"
+              class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+              <option value="">Seleccionar ubicación o beneficiarios...</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Área de acción o grupo focalizado</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-1" for="descripcion_temporalidad">
+              5. Temporalidad <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="descripcion_temporalidad"
+              required
+              class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+              <option value="">Seleccionar temporalidad...</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Periodo de ejecución</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-lg border border-gray-300">
+        <div class="flex items-start justify-between">
+          <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-2">
+            Descripción generada:
+          </label>
+          <div class="flex items-center gap-2">
+            <button id="tips-toggle" type="button" title="Mostrar consejos" class="inline-flex items-center gap-2 rounded-md border border-transparent bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50">
+              <span class="material-symbols-outlined">lightbulb</span>
+              Consejos
+            </button>
+            <button type="button" id="verificar-ortografia" class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-3 py-1 text-sm font-semibold text-white shadow hover:bg-indigo-700">
+              <span class="material-symbols-outlined">spellcheck</span>
+              Verificar ortografía
+            </button>
+            <button type="button" id="limpiar-descripcion" class="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50">
+              <span class="material-symbols-outlined">clear</span>
+              Limpiar
+            </button>
+          </div>
+        </div>
+  <div class="descripcion-editor-wrapper mt-4">
+          <div
+            id="descripcion_actividad_editor"
+            class="descripcion-actividad-editor"
+            data-field-name="descripcion_actividad"
+            data-orthography-editor
+            data-orthography-hidden="#descripcion_actividad"
+            data-orthography-panel="#descripcion-ortografia-panel"
+            data-orthography-button="#verificar-ortografia"
+            data-orthography-counter="#descripcion-ortografia-count"
+            data-orthography-first="#descripcion-ortografia-first"
+            contenteditable="true"
+            spellcheck="false"
+            role="textbox"
+            aria-multiline="true"
+            aria-label="Descripción de la actividad"></div>
+          <textarea id="descripcion_actividad" name="descripcion_actividad" required hidden></textarea>
+        </div>
+        <div id="descripcion-ortografia-panel" class="descripcion-ortografia-panel mt-3">
+          <div id="descripcion-ortografia-count" data-orthography-count>Ortografía: 0 errores</div>
+          <div id="descripcion-ortografia-first" data-orthography-first>Sin errores.</div>
+        </div>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mt-2">
+          <div class="text-xs text-[var(--text-secondary)] flex items-start justify-between">
+            <div>
+              <p class="mt-0"><span class="font-semibold">Ejemplo:</span> Realizar simulacros comunitarios de evacuación para fortalecer la preparación ante tsunamis en municipios costeros del Pacífico durante el primer semestre de 2025.</p>
+            </div>
+            <!-- tips toggle is available in the header toolbar -->
+          </div>
+          <div id="descripcion-tips" class="hidden mt-3 p-3 rounded-md bg-gray-50 border border-gray-200 text-xs text-[var(--text-secondary)]">
+            <ul class="list-disc ml-4">
+              <li>Mantén la estructura: Verbo + Objeto + Finalidad + Ubicación/beneficiarios + Temporalidad.</li>
+              <li>Usa verbos en infinitivo claros y concisos (p. ej. "Realizar", "Capacitar", "Instalar").</li>
+              <li>Evita frases largas y redundantes; prioriza la precisión sobre la extensión.</li>
+              <li>Incluye el beneficiario o la ubicación específica cuando sea relevante.</li>
+              <li>Revisa ortografía y puntuación antes de guardar; usa el botón "Verificar ortografía" para ejecutar la comprobación manualmente.</li>
+              <li>Si la descripción es un entregable, indica el resultado esperado y el periodo de ejecución.</li>
+            </ul>
+          </div>
+          <!-- toolbar moved to header -->
+          <div class="sr-only" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Código de Actividad (solo lectura) -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Código de Actividad
+      </label>
+      <input
+        type="text"
+        id="codigo_actividad"
+        name="codigo"
+        readonly
+        class="block w-full rounded-md border-gray-300 bg-gray-100 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        placeholder="Se genera al guardar"
+      />
+    </div>
+
+    <!-- Área -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Área <span class="text-red-500">*</span>
+      </label>
+      <select 
+        id="area_id" 
+        name="area_id"
+        required
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar área...</option>
+      </select>
+    </div>
+
+    <!-- Subproceso -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Subproceso <span class="text-red-500">*</span>
+      </label>
+      <select 
+        id="subproceso_id" 
+        name="subproceso_id"
+        required
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar subproceso...</option>
+      </select>
+    </div>
+
+    <!-- MIPG -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Dimensión MIPG
+      </label>
+      <select 
+        id="mipg_codigo" 
+        name="mipg"
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar MIPG...</option>
+      </select>
+    </div>
+
+    <!-- Objetivo Estratégico -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Objetivo Estratégico
+      </label>
+      <select 
+        id="objetivo_id" 
+        name="objetivo_id"
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar objetivo...</option>
+      </select>
+    </div>
+
+    <!-- Estrategia -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Estrategia
+      </label>
+      <select 
+        id="estrategia_id" 
+        name="estrategia_id"
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar estrategia...</option>
+      </select>
+    </div>
+
+    <!-- Línea de Acción -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Línea de Acción <span class="text-red-500">*</span>
+      </label>
+      <select 
+        id="linea_id" 
+        name="linea_id"
+        required
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar línea...</option>
+      </select>
+    </div>
+
+    <!-- Indicador -->
+    <div class="lg:col-span-3">
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <label class="block text-sm font-medium text-[var(--text-secondary)]">
+            Indicador <span class="text-red-500">*</span>
+          </label>
+          <button
+            type="button"
+            id="verificar-ortografia-indicador"
+            class="inline-flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3 py-1 text-sm font-semibold text-white shadow hover:bg-indigo-700 w-full sm:w-auto">
+            <span class="material-symbols-outlined">spellcheck</span>
+            Verificar ortografía
+          </button>
+        </div>
+        <p class="text-xs text-[var(--text-secondary)]">
+          Construye el indicador respondiendo <span class="font-semibold">qué</span> se va a medir, <span class="font-semibold">cómo</span>, <span class="font-semibold">dónde/a quién</span> y <span class="font-semibold">cuándo</span>. Sigue la fórmula lógica: <span class="font-semibold">Indicador = [Qué se va a medir] + [Cómo se va a medir] + [Contexto/Población] + [Tiempo/Frecuencia]</span>.
+        </p>
+        <div class="descripcion-editor-wrapper">
+          <div
+            id="indicador_editor"
+            class="descripcion-actividad-editor"
+            data-field-name="indicador"
+            data-orthography-editor
+            data-orthography-hidden="#indicador_texto"
+            data-orthography-panel="#indicador-ortografia-panel"
+            data-orthography-button="#verificar-ortografia-indicador"
+            data-orthography-counter="#indicador-ortografia-count"
+            data-orthography-first="#indicador-ortografia-first"
+            contenteditable="true"
+            spellcheck="false"
+            role="textbox"
+            aria-multiline="true"
+            aria-label="Indicador de la actividad"></div>
+          <textarea id="indicador_texto" name="indicador" hidden></textarea>
+        </div>
+        <div id="indicador-ortografia-panel" class="descripcion-ortografia-panel mt-3">
+          <div id="indicador-ortografia-count" data-orthography-count>Ortografía: 0 errores</div>
+          <div id="indicador-ortografia-first" data-orthography-first>Sin errores.</div>
+        </div>
+        <div class="mt-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700 space-y-1">
+          <p class="font-semibold text-slate-800">Ejemplos rápidos:</p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Porcentaje de municipios con planes actualizados frente a emergencias, medido semestralmente.</li>
+            <li>Número de simulacros comunitarios realizados en zonas de alta exposición durante el primer semestre.</li>
+          </ul>
+          <p class="text-slate-500">Evita indicadores vagos o sin unidad de medida (ej. "acciones formuladas" sin cantidad).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meta del Indicador -->
+    <div class="lg:col-span-3">
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <label class="block text-sm font-medium text-[var(--text-secondary)]">
+            Meta del Indicador <span class="text-red-500">*</span>
+          </label>
+          <button
+            type="button"
+            id="verificar-ortografia-meta"
+            class="inline-flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3 py-1 text-sm font-semibold text-white shadow hover:bg-indigo-700 w-full sm:w-auto">
+            <span class="material-symbols-outlined">spellcheck</span>
+            Verificar ortografía
+          </button>
+        </div>
+        <p class="text-xs text-[var(--text-secondary)]">
+          Redacta la meta siguiendo la estructura: <span class="font-semibold">[Valor objetivo] + [Unidad de medida] + [Plazo o vigencia]</span>. El primer valor numérico se usará para las validaciones de distribución bimestral.
+        </p>
+        <div class="descripcion-editor-wrapper">
+          <div
+            id="meta_indicador_editor"
+            class="descripcion-actividad-editor"
+            data-field-name="meta_indicador_detalle"
+            data-orthography-editor
+            data-orthography-hidden="#meta_indicador_detalle"
+            data-orthography-panel="#meta-ortografia-panel"
+            data-orthography-button="#verificar-ortografia-meta"
+            data-orthography-counter="#meta-ortografia-count"
+            data-orthography-first="#meta-ortografia-first"
+            contenteditable="true"
+            spellcheck="false"
+            role="textbox"
+            aria-multiline="true"
+            aria-label="Meta del indicador"></div>
+          <textarea id="meta_indicador_detalle" name="meta_indicador_detalle" hidden></textarea>
+          <input type="hidden" id="meta_indicador_valor" name="meta_indicador_valor" />
+        </div>
+        <div id="meta-ortografia-panel" class="descripcion-ortografia-panel mt-3">
+          <div id="meta-ortografia-count" data-orthography-count>Ortografía: 0 errores</div>
+          <div id="meta-ortografia-first" data-orthography-first>Sin errores.</div>
+        </div>
+        <div class="mt-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 space-y-1">
+          <p class="font-semibold text-amber-900">Ejemplos:</p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>25 simulacros comunitarios realizados durante 2025.</li>
+            <li>100% de sistemas de alerta temprana operativos al cierre de la vigencia.</li>
+          </ul>
+          <p class="text-amber-700">Incluye cantidades claras y evita metas sin unidad de medida.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presupuesto Programado -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Presupuesto Programado
+      </label>
+      <input 
+        type="number" 
+        id="presupuesto_programado" 
+        name="presupuesto_programado"
+        step="0.01"
+        min="0"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        placeholder="0.00">
+    </div>
+
+    <!-- Distribución por Bimestres -->
+    <div class="lg:col-span-3">
+      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div class="space-y-2">
+            <h4 class="text-sm font-semibold text-[var(--text-primary)]">Distribución por Bimestre</h4>
+            <p class="text-xs text-[var(--text-secondary)]">Distribuye el presupuesto programado y la meta del indicador entre los seis bimestres del año. Ambas sumas deben coincidir con sus respectivos totales.</p>
+          </div>
+          <div class="text-right text-xs md:text-sm space-y-3">
+            <div>
+              <div>Total presupuesto programado: <span id="bimestres-presupuesto-total" class="font-semibold text-indigo-600">$0</span></div>
+              <div>Presupuesto distribuido: <span id="bimestres-total" class="font-semibold text-[var(--text-primary)]">$0</span></div>
+              <div id="bimestres-diff" class="mt-1 text-xs font-semibold"></div>
+            </div>
+            <div>
+              <div>Meta del indicador: <span id="bimestres-meta-total" class="font-semibold text-indigo-600">0</span></div>
+              <div>Meta distribuida: <span id="bimestres-meta-distribuida" class="font-semibold text-[var(--text-primary)]">0</span></div>
+              <div id="bimestres-meta-diff" class="mt-1 text-xs font-semibold"></div>
+            </div>
+          </div>
+        </div>
+        <div id="bimestres-grid" class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm" data-bimestre-index="1">
+            <div class="mb-3 flex items-center justify-between">
+              <h5 class="text-sm font-semibold text-[var(--text-primary)]">Enero-Febrero</h5>
+              <span class="text-xs text-[var(--text-secondary)]">Bimestre 1</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-meta-1">Meta programada</label>
+                <input type="number" id="bimestre-meta-1" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-presupuesto-1">Presupuesto</label>
+                <input type="number" id="bimestre-presupuesto-1" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-descripcion-1">Descripción / entregables</label>
+              <textarea id="bimestre-descripcion-1" rows="3" maxlength="500" class="mt-1 block w-full resize-y rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Detalla el desglose de entregables o actividades del bimestre"></textarea>
+              <p class="mt-1 text-xs text-[var(--text-secondary)]">Usa saltos de línea para separar tipos de entregable (ej. "5 documentos escritos" + Enter + "5 presentaciones").</p>
+              <div id="bimestre-descripcion-feedback-1" class="mt-1 hidden text-xs font-semibold"></div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm" data-bimestre-index="2">
+            <div class="mb-3 flex items-center justify-between">
+              <h5 class="text-sm font-semibold text-[var(--text-primary)]">Marzo-Abril</h5>
+              <span class="text-xs text-[var(--text-secondary)]">Bimestre 2</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-meta-2">Meta programada</label>
+                <input type="number" id="bimestre-meta-2" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-presupuesto-2">Presupuesto</label>
+                <input type="number" id="bimestre-presupuesto-2" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-descripcion-2">Descripción / entregables</label>
+              <textarea id="bimestre-descripcion-2" rows="3" maxlength="500" class="mt-1 block w-full resize-y rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Detalla el desglose de entregables o actividades del bimestre"></textarea>
+              <p class="mt-1 text-xs text-[var(--text-secondary)]">Puedes indicar cantidades por tipo de entregable, por ejemplo: "4 talleres presenciales" y "2 talleres virtuales".</p>
+              <div id="bimestre-descripcion-feedback-2" class="mt-1 hidden text-xs font-semibold"></div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm" data-bimestre-index="3">
+            <div class="mb-3 flex items-center justify-between">
+              <h5 class="text-sm font-semibold text-[var(--text-primary)]">Mayo-Junio</h5>
+              <span class="text-xs text-[var(--text-secondary)]">Bimestre 3</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-meta-3">Meta programada</label>
+                <input type="number" id="bimestre-meta-3" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-presupuesto-3">Presupuesto</label>
+                <input type="number" id="bimestre-presupuesto-3" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-descripcion-3">Descripción / entregables</label>
+              <textarea id="bimestre-descripcion-3" rows="3" maxlength="500" class="mt-1 block w-full resize-y rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Detalla el desglose de entregables o actividades del bimestre"></textarea>
+              <p class="mt-1 text-xs text-[var(--text-secondary)]">Incluye observaciones relevantes: responsables, modalidad, público objetivo o criterios de entrega.</p>
+              <div id="bimestre-descripcion-feedback-3" class="mt-1 hidden text-xs font-semibold"></div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm" data-bimestre-index="4">
+            <div class="mb-3 flex items-center justify-between">
+              <h5 class="text-sm font-semibold text-[var(--text-primary)]">Julio-Agosto</h5>
+              <span class="text-xs text-[var(--text-secondary)]">Bimestre 4</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-meta-4">Meta programada</label>
+                <input type="number" id="bimestre-meta-4" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-presupuesto-4">Presupuesto</label>
+                <input type="number" id="bimestre-presupuesto-4" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-descripcion-4">Descripción / entregables</label>
+              <textarea id="bimestre-descripcion-4" rows="3" maxlength="500" class="mt-1 block w-full resize-y rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Detalla el desglose de entregables o actividades del bimestre"></textarea>
+              <p class="mt-1 text-xs text-[var(--text-secondary)]">Si divides la meta, aclara cuántas unidades corresponden a cada tipo de acción o producto.</p>
+              <div id="bimestre-descripcion-feedback-4" class="mt-1 hidden text-xs font-semibold"></div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm" data-bimestre-index="5">
+            <div class="mb-3 flex items-center justify-between">
+              <h5 class="text-sm font-semibold text-[var(--text-primary)]">Septiembre-Octubre</h5>
+              <span class="text-xs text-[var(--text-secondary)]">Bimestre 5</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-meta-5">Meta programada</label>
+                <input type="number" id="bimestre-meta-5" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-presupuesto-5">Presupuesto</label>
+                <input type="number" id="bimestre-presupuesto-5" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-descripcion-5">Descripción / entregables</label>
+              <textarea id="bimestre-descripcion-5" rows="3" maxlength="500" class="mt-1 block w-full resize-y rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Detalla el desglose de entregables o actividades del bimestre"></textarea>
+              <p class="mt-1 text-xs text-[var(--text-secondary)]">Ejemplo: "Meta 10 capacitaciones => 6 virtuales, 4 presenciales con 80 asistentes cada una".</p>
+              <div id="bimestre-descripcion-feedback-5" class="mt-1 hidden text-xs font-semibold"></div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm" data-bimestre-index="6">
+            <div class="mb-3 flex items-center justify-between">
+              <h5 class="text-sm font-semibold text-[var(--text-primary)]">Noviembre-Diciembre</h5>
+              <span class="text-xs text-[var(--text-secondary)]">Bimestre 6</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-meta-6">Meta programada</label>
+                <input type="number" id="bimestre-meta-6" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-presupuesto-6">Presupuesto</label>
+                <input type="number" id="bimestre-presupuesto-6" step="0.01" min="0" class="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0" />
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="block text-xs font-medium text-[var(--text-secondary)]" for="bimestre-descripcion-6">Descripción / entregables</label>
+              <textarea id="bimestre-descripcion-6" rows="3" maxlength="500" class="mt-1 block w-full resize-y rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Detalla el desglose de entregables o actividades del bimestre"></textarea>
+              <p class="mt-1 text-xs text-[var(--text-secondary)]">Referencia lo programado vs. lo proyectado para cierre de año, o anota actividades preparatorias del siguiente periodo.</p>
+              <div id="bimestre-descripcion-feedback-6" class="mt-1 hidden text-xs font-semibold"></div>
+            </div>
+          </div>
+        </div>
+        <div id="bimestres-feedback" class="mt-3 hidden rounded-md border px-3 py-2 text-xs"></div>
+        <div id="bimestres-meta-feedback" class="mt-3 hidden rounded-md border px-3 py-2 text-xs"></div>
+      </div>
+    </div>
+
+    <!-- Fuente -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Fuente de Financiamiento
+      </label>
+      <select 
+        id="fuente_financiacion" 
+        name="fuente"
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar fuente...</option>
+      </select>
+    </div>
+
+    <!-- Plan -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Planes asociados
+      </label>
+      <div class="modern-multiselect" data-multiselect="plan" data-placeholder="Seleccionar planes...">
+        <button type="button" class="modern-multiselect__trigger" data-multiselect-trigger id="plan-multiselect-trigger">
+          <span class="modern-multiselect__label" id="plan-multiselect-label">Seleccionar planes...</span>
+          <span class="modern-multiselect__badge hidden" id="plan-multiselect-count">0</span>
+          <span class="material-symbols-outlined modern-multiselect__chevron">expand_more</span>
+        </button>
+        <div class="modern-multiselect__dropdown hidden" data-multiselect-dropdown id="plan-multiselect-dropdown">
+          <div class="modern-multiselect__search">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" class="modern-multiselect__search-input" id="plan-multiselect-search" placeholder="Buscar plan..." autocomplete="off" />
+          </div>
+          <div class="modern-multiselect__list" id="plan-multiselect-list"></div>
+          <div class="modern-multiselect__empty hidden" id="plan-multiselect-empty">No hay planes que coincidan con tu búsqueda.</div>
+          <div class="modern-multiselect__footer">
+            <button type="button" class="modern-multiselect__link" id="plan-multiselect-clear">Limpiar</button>
+            <button type="button" class="modern-multiselect__btn" id="plan-multiselect-close">Listo</button>
+          </div>
+        </div>
+      </div>
+      <select 
+        id="plan_id" 
+        name="plan_id"
+        multiple
+        class="modern-multiselect__native"
+        data-skip-enhance="true">
+        <option value="">Seleccionar planes...</option>
+      </select>
+      <p class="mt-1 text-xs text-[var(--text-secondary)]">Marca uno o varios planes para asociarlos a la actividad.</p>
+    </div>
+
+    <!-- Responsable -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Responsable <span class="text-xs text-gray-400">(Auto-asignado)</span>
+      </label>
+      <input 
+        type="text" 
+        id="responsable" 
+        name="responsable"
+        readonly
+        class="block w-full rounded-md border-gray-300 bg-gray-50 text-gray-600 shadow-sm sm:text-sm cursor-not-allowed"
+        placeholder="Se asignará automáticamente al usuario actual"
+        title="Este campo se llena automáticamente con el email del usuario logueado">
+    </div>
+
+    <!-- Fecha Inicio -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Fecha de Inicio Planeada
+      </label>
+      <input 
+        type="date" 
+        id="fecha_inicio_planeada" 
+        name="fecha_inicio_planeada"
+        data-placeholder="Seleccionar fecha de inicio"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+    </div>
+
+    <!-- Fecha Fin -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Fecha de Fin Planeada
+      </label>
+      <input 
+        type="date" 
+        id="fecha_fin_planeada" 
+        name="fecha_fin_planeada"
+        data-placeholder="Seleccionar fecha de fin"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+    </div>
+
+    <!-- Estado -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+        Estado <span class="text-red-500">*</span>
+      </label>
+      <select 
+        id="estado" 
+        name="estado"
+        required
+        class="modern-select block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">Seleccionar estado...</option>
+        <option value="Planeada">Planeada</option>
+        <option value="En Progreso">En Progreso</option>
+        <option value="Completada">Completada</option>
+        <option value="Suspendida">Suspendida</option>
+        <option value="Cancelada">Cancelada</option>
+      </select>
+    </div>
+
+    <!-- Riesgos -->
+    <div class="lg:col-span-3">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+        <label class="block text-sm font-medium text-[var(--text-secondary)]">
+          Riesgos
+        </label>
+        <button
+          type="button"
+          id="verificar-ortografia-riesgos"
+          class="inline-flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3 py-1 text-sm font-semibold text-white shadow hover:bg-indigo-700 w-full sm:w-auto">
+          <span class="material-symbols-outlined">spellcheck</span>
+          Verificar ortografía
+        </button>
+      </div>
+      <div class="descripcion-editor-wrapper">
+        <div
+          id="riesgos_editor"
+          class="descripcion-actividad-editor"
+          data-field-name="riesgos"
+          data-orthography-editor
+          data-orthography-hidden="#riesgos"
+          data-orthography-panel="#riesgos-ortografia-panel"
+          data-orthography-button="#verificar-ortografia-riesgos"
+          data-orthography-counter="#riesgos-ortografia-count"
+          data-orthography-first="#riesgos-ortografia-first"
+          contenteditable="true"
+          spellcheck="false"
+          role="textbox"
+          aria-multiline="true"
+          aria-label="Riesgos de la actividad"></div>
+        <textarea id="riesgos" name="riesgos" hidden></textarea>
+      </div>
+      <div id="riesgos-ortografia-panel" class="descripcion-ortografia-panel mt-3">
+        <div id="riesgos-ortografia-count" data-orthography-count>Ortografía: 0 errores</div>
+        <div id="riesgos-ortografia-first" data-orthography-first>Sin errores.</div>
+      </div>
+      <p class="mt-2 text-xs text-[var(--text-secondary)]">Incluye riesgos relevantes asociados a la ejecución de la actividad.</p>
+    </div>
+
+    <!-- Botones -->
+    <div class="lg:col-span-3 flex gap-4 pt-4">
+      <button 
+        type="submit" 
+        class="flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors">
+        <span class="material-symbols-outlined">save</span>
+        <span id="btn-submit-text">Guardar Actividad</span>
+      </button>
+      <button 
+        type="button" 
+        id="btn-cancelar"
+        class="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors">
+        <span class="material-symbols-outlined">cancel</span>
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Lista de actividades rediseñada -->
+<div class="rounded-lg border border-gray-200 bg-white shadow-sm">
+  <div class="px-6 py-4 border-b border-gray-200">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h3 class="text-lg font-medium text-[var(--text-primary)]">Lista de Actividades</h3>
+        <p class="mt-1 text-sm text-[var(--text-secondary)]">Gestiona todas las actividades del plan de acción institucional</p>
+      </div>
+      
+      <!-- Buscador mejorado -->
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 text-lg">search</span>
+          </div>
+          <input type="text" id="actividades-search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar actividades...">
+        </div>
+        <div class="text-sm text-gray-500" id="actividades-count">
+          <!-- Se llenará dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filtros mejorados -->
+  <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-secondary)] mb-1">Área</label>
+        <select id="filtro-area" class="modern-select block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+          <option value="">Todas las áreas</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-secondary)] mb-1">Estado</label>
+        <select id="filtro-estado" class="modern-select block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+          <option value="">Todos los estados</option>
+          <option value="Planeada">Planeada</option>
+          <option value="En Progreso">En Progreso</option>
+          <option value="Completada">Completada</option>
+          <option value="Suspendida">Suspendida</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-secondary)] mb-1">Plan</label>
+        <select id="filtro-plan" class="modern-select block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+          <option value="">Todos los planes</option>
+        </select>
+      </div>
+      <div class="flex items-end">
+        <button id="btn-limpiar-filtros" class="w-full text-sm rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:bg-gray-50 transition-colors">
+          Limpiar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de tarjetas -->
+  <div class="p-6">
+    <div id="actividades-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <!-- Las tarjetas se generarán dinámicamente -->
+    </div>
+    
+    <!-- Estado vacío -->
+    <div id="actividades-empty" class="hidden py-16 text-center">
+      <div class="flex flex-col items-center gap-6">
+        <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-5xl text-indigo-600">assignment_add</span>
+        </div>
+        <div class="flex flex-col gap-3">
+          <h3 class="text-xl font-semibold text-gray-700">No hay actividades registradas</h3>
+          <p class="text-gray-500 max-w-md mx-auto">Comienza creando tu primera actividad del plan de acción institucional para gestionar y dar seguimiento a tus objetivos.</p>
+        </div>
+        <button onclick="document.getElementById('btn-nueva-actividad').click()" class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors shadow-sm hover:shadow-md">
+          <span class="material-symbols-outlined">add</span>
+          Nueva Actividad
+        </button>
+      </div>
+    </div>
+    
+    <!-- Paginación mejorada -->
+    <div id="actividades-pagination" class="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
+      <div class="flex items-center gap-2 text-sm text-gray-700">
+        <span>Mostrando</span>
+        <select id="page-size-select" class="border border-gray-300 rounded px-2 py-1 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+          <option value="6">6</option>
+          <option value="12" selected>12</option>
+          <option value="24">24</option>
+          <option value="48">48</option>
+        </select>
+        <span>actividades por página</span>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <span id="pagination-info" class="text-sm text-gray-700"></span>
+        <div id="pagination-controls" class="flex items-center gap-1">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Detalles de Actividad -->
+<div id="modal-detalle-actividad" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+  <div class="relative top-14 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white modal-shell">
+    <!-- Header del Modal -->
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-start justify-between mb-4">
+        <h2 id="modal-titulo" class="text-2xl font-bold text-gray-900">Detalle de Actividad</h2>
+        <button id="btn-cerrar-modal" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+      </div>
+      
+      <!-- Información del Header Reorganizada -->
+      <div id="modal-header-info" class="mb-4">
+        <!-- Se llenará dinámicamente -->
+      </div>
+      
+      <!-- Contenedores legacy para compatibilidad (ocultos) -->
+      <div class="hidden">
+        <div id="modal-codigo-container"></div>
+        <div id="modal-estado-container"></div>
+      </div>
+    </div>
+    
+    <!-- Contenido del Modal -->
+  <div class="p-6 modal-content-scroll">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        
+        <!-- Información Administrativa -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">Información Administrativa</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Área</span>
+              <div id="modal-area-container"></div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Subproceso</span>
+              <div id="modal-subproceso-container"></div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Responsable</span>
+              <div id="modal-responsable-container"></div>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <span class="text-sm font-medium text-gray-600">Plan Estratégico</span>
+              <div id="modal-plan-container" class="text-right"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Cronograma -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">Cronograma</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Fecha de Inicio</span>
+              <div id="modal-fecha-inicio-container"></div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Fecha de Fin</span>
+              <div id="modal-fecha-fin-container"></div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Duración Total</span>
+              <div id="modal-duracion-total"></div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Días Transcurridos</span>
+              <div id="modal-dias-transcurridos"></div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-200">
+              <span class="text-sm font-medium text-gray-600">Días Restantes</span>
+              <div id="modal-dias-restantes"></div>
+            </div>
+            <div class="pt-2">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-gray-600">Progreso Temporal</span>
+                <span id="modal-progreso-porcentaje" class="text-xs font-semibold text-gray-700"></span>
+              </div>
+              <div id="modal-progreso-barra" class="w-full bg-gray-200 rounded-full h-2">
+                <!-- Barra de progreso se llenará dinámicamente -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Contenedores legacy para compatibilidad (ocultos) -->
+      <div class="hidden">
+        <div id="modal-descripcion"></div>
+        <div id="modal-presupuesto-container"></div>
+        <div id="modal-presupuesto-total"></div>
+        <div id="modal-meta-distribuida"></div>
+      </div>
+      
+        <!-- Riesgos destacados -->
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-6">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-amber-500">warning</span>
+            <div class="flex-1">
+              <h3 class="text-sm font-semibold text-amber-700 uppercase tracking-wide mb-2">Riesgos de la Actividad</h3>
+              <div id="modal-riesgos-container" class="text-sm text-amber-900 leading-relaxed">Sin riesgos registrados</div>
+            </div>
+          </div>
+        </div>
+
+      <!-- Distribución Bimestral - Ancho Completo -->
+      <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 mt-8">
+        <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-lg text-slate-500">calendar_month</span>
+          Distribución por Bimestres
+        </h3>
+        <div id="modal-bimestres-container">
+          <!-- Se llenará dinámicamente -->
+        </div>
+      </div>
+      
+      <!-- Indicadores y Metas - Ancho Completo -->
+  <div class="modal-indicator-wrapper mt-6 p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-700">Indicadores y Metas</h3>
+        </div>
+        <div class="modal-indicator-grid mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div id="modal-indicador-container" class="min-h-[120px]"></div>
+          <div id="modal-meta-container" class="min-h-[120px]"></div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <div id="modal-ultima-actualizacion" class="flex items-center gap-2 text-xs text-gray-500">
+          <!-- Se llenará dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+    </main>
+  </div>
+</div>
+
+<script type="module" src="../lib/loader.js"></script>
+
+<script type="module">
+  import '../lib/session-guard.js';
+  import { renderSidebar } from '../lib/sidebar-component.js';
+  try { renderSidebar('#shared-sidebar'); } catch (e) { console.warn('renderSidebar failed', e); }
+</script>
+
+<script type="module" src="../../public/js/orthography.js"></script>
+
+<script type="module" src="../pages_scripts/actividades.js"></script>
+
+<script>
+  // Toggle tips panel attached to the description editor
+  (function(){
+    const btn = document.getElementById('tips-toggle');
+    const panel = document.getElementById('descripcion-tips');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', () => {
+      panel.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', !panel.classList.contains('hidden'));
+    });
+  })();
+
+  (function(){
+    const limpiar = document.getElementById('limpiar-descripcion');
+    const editor = document.getElementById('descripcion_actividad_editor');
+    const hidden = document.getElementById('descripcion_actividad');
+    const countNode = document.getElementById('descripcion-ortografia-count');
+    const firstNode = document.getElementById('descripcion-ortografia-first');
+    if (!limpiar || !editor) return;
+    limpiar.addEventListener('click', () => {
+      if (editor) editor.textContent = '';
+      if (hidden) hidden.value = '';
+      if (countNode) countNode.textContent = 'Ortografía: 0 errores';
+      if (firstNode) firstNode.textContent = 'Sin errores.';
+      // If an orthography checker instance exists, sync it and clear internal state
+      if (editor.__orthographyChecker) {
+        try { editor.__orthographyChecker.setText(''); } catch(e) {}
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
+
+
+
+

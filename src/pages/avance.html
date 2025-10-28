@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+  <link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>PAI 2025 - Avances Bimestrales</title>
+  <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --primary-color: #137fec;
+    }
+    body { font-family: 'Inter', 'Noto Sans', sans-serif; }
+  </style>
+  <link rel="stylesheet" href="../styles/sidebar.css">
+  <link rel="stylesheet" href="../styles/layout.css">
+  <link rel="stylesheet" href="../styles/loader.css">
+  <link rel="stylesheet" href="../styles/avance.css">
+</head>
+<body class="bg-[var(--background-color)]">
+  <div class="h-full min-h-screen w-full flex-col">
+    <div class="flex-1">
+      <div class="layout-with-sidebar">
+        <div id="shared-sidebar" class="hidden md:block"></div>
+        <main class="p-4 sm:p-6 md:p-8">
+          <div class="mx-auto max-w-7xl">
+            <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h2 class="text-3xl font-bold text-[var(--text-primary)]">Avances Bimestrales</h2>
+                <p class="text-sm text-[var(--text-secondary)] mt-1">Monitorea la ejecución y registra nuevos avances con contexto de actividad y planificación.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-3">
+                <button id="btn-nuevo-avance" type="button" class="flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors">
+                  <span class="material-symbols-outlined">add</span>
+                  Registrar avance
+                </button>
+                <button class="export-avances-btn flex items-center gap-2 h-10 px-4 rounded-md" type="button">
+                  <span class="material-symbols-outlined text-lg">download</span>
+                  Exportar CSV
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <section class="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-slate-100">
+                <div class="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <h2 class="text-lg font-semibold text-gray-800">Filtros rápidos</h2>
+                    <p class="text-sm text-gray-500">Combina criterios para enfocar la lista de avances y encontrar registros específicos.</p>
+                  </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 avance-filters">
+                  <select id="filter-actividad" class="w-full h-12 px-4 rounded-md border border-gray-300" data-placeholder="Todas las actividades">
+                    <option value="">Todas las actividades</option>
+                  </select>
+                  <select id="filter-year" class="w-full h-12 px-4 rounded-md border border-gray-300" data-placeholder="Todos los años">
+                    <option value="">Todos los años</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                  </select>
+                  <select id="filter-bimestre" class="w-full h-12 px-4 rounded-md border border-gray-300" data-placeholder="Todos los bimestres">
+                    <option value="">Todos los bimestres</option>
+                    <option value="Enero-Febrero">Enero-Febrero</option>
+                    <option value="Marzo-Abril">Marzo-Abril</option>
+                    <option value="Mayo-Junio">Mayo-Junio</option>
+                    <option value="Julio-Agosto">Julio-Agosto</option>
+                    <option value="Septiembre-Octubre">Septiembre-Octubre</option>
+                    <option value="Noviembre-Diciembre">Noviembre-Diciembre</option>
+                  </select>
+                </div>
+              </section>
+
+              <section id="actividad-resumen-card" class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div class="space-y-2">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]">Actividad seleccionada</p>
+                    <h3 id="actividad-resumen-nombre" class="text-2xl font-semibold text-gray-900">Selecciona una actividad</h3>
+                    <p id="actividad-resumen-resumen" class="text-sm text-gray-500">Usa los filtros para visualizar los avances relacionados y su planificación.</p>
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                      <span id="actividad-resumen-codigo" class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium">Código: &mdash;</span>
+                      <span id="actividad-resumen-area" class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-3 py-1 font-medium text-indigo-700">Área no seleccionada</span>
+                      <span id="actividad-resumen-subproceso" class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600">Subproceso no disponible</span>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div class="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Meta anual planificada</p>
+                      <p id="actividad-resumen-meta-plan" class="mt-1 text-lg font-semibold text-slate-800 long-number">&mdash;</p>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Presupuesto programado</p>
+                      <p id="actividad-resumen-presupuesto-plan" class="mt-1 text-lg font-semibold text-slate-800 long-number">&mdash;</p>
+                    </div>
+                    <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                      <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">Logro reportado en vista</p>
+                      <p id="actividad-resumen-meta-logro" class="mt-1 text-lg font-semibold text-emerald-700 long-number">&mdash;</p>
+                    </div>
+                    <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                      <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">Presupuesto ejecutado</p>
+                      <p id="actividad-resumen-presupuesto-ejecutado" class="mt-1 text-lg font-semibold text-emerald-700 long-number">&mdash;</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-5 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                  <span id="actividad-resumen-avances-count" class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600">0 avances visibles</span>
+                  <span id="actividad-resumen-ultima-fecha" class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600">Último reporte: &mdash;</span>
+                </div>
+
+                <div class="mt-6 space-y-3">
+                  <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    <span class="material-symbols-outlined text-base text-slate-500">calendar_month</span>
+                    Distribución planificada por bimestre
+                  </div>
+                  <div id="actividad-resumen-bimestres" class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+                </div>
+              </section>
+
+              <section class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <h2 class="text-xl font-bold text-gray-800">Lista de avances</h2>
+                  <div class="flex items-center gap-3">
+                    <button id="refrescar-avances" type="button" class="inline-flex items-center gap-2 rounded-md border border-gray-200 px-3 py-1 text-xs font-medium text-gray-600 hover:border-indigo-300 hover:text-indigo-600 transition-colors">
+                      <span class="material-symbols-outlined text-base">refresh</span>
+                      Actualizar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="overflow-x-auto table-avances">
+                  <table class="w-full text-sm text-left text-gray-600 avances-table">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                      <tr>
+                        <th class="px-6 py-3">Radicado</th>
+                        <th class="px-6 py-3">Actividad</th>
+                        <th class="px-6 py-3">Área</th>
+                        <th class="px-6 py-3">Año</th>
+                        <th class="px-6 py-3">Bimestre</th>
+                        <th class="px-6 py-3">Meta</th>
+                        <th class="px-6 py-3">Logro</th>
+                        <th class="px-6 py-3">Cumplimiento</th>
+                        <th class="px-6 py-3">Presupuesto</th>
+                        <th class="px-6 py-3">Evidencia</th>
+                        <th class="px-6 py-3">Estado</th>
+                        <th class="px-6 py-3">Reportado por</th>
+                        <th class="px-6 py-3">Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody id="avances-body"></tbody>
+                  </table>
+                </div>
+
+                <div id="avances-empty" class="avances-empty-state hidden">
+                  <span>Sin avances registrados</span>
+                  No hemos encontrado avances para los filtros seleccionados.
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 text-sm text-gray-600">
+                  <p id="avances-summary" class="font-medium">0 avances encontrados</p>
+                  <p id="avances-summary-selection" class="text-xs text-gray-500"></p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+      <div id="modal-registrar-avance" class="fixed inset-0 z-[60] hidden bg-gray-900/60 backdrop-blur-sm">
+        <div class="flex min-h-full items-center justify-center px-4 py-8">
+          <div class="relative w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+            <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+              <div>
+                <h3 class="text-xl font-semibold text-gray-900">Registrar avance</h3>
+                <p id="modal-actividad-subtitulo" class="text-sm text-gray-500">Selecciona una actividad y el bimestre a reportar.</p>
+              </div>
+              <button id="btn-cerrar-modal-avance" type="button" class="rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600" aria-label="Cerrar modal">
+                <span class="material-symbols-outlined text-2xl">close</span>
+              </button>
+            </div>
+
+            <div class="max-h-[80vh] overflow-y-auto px-6 py-6 space-y-6" id="modal-registrar-avance-body">
+              <div id="modal-actividad-resumen" class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div class="space-y-2">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Actividad seleccionada</p>
+                    <h4 id="modal-actividad-nombre" class="text-lg font-semibold text-slate-900">Selecciona una actividad</h4>
+                    <p id="modal-actividad-descripcion" class="text-sm leading-6 text-slate-600">Visualiza aquí la descripción y métricas planificadas de la actividad.</p>
+                  </div>
+                  <div class="grid grid-cols-1 gap-2 text-xs text-slate-600 sm:grid-cols-2 lg:text-right">
+                    <span id="modal-actividad-codigo" class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium">Código: &mdash;</span>
+                    <span id="modal-actividad-area" class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-3 py-1 font-medium text-indigo-700">Área: &mdash;</span>
+                    <span id="modal-actividad-meta-anual" class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 font-medium">Meta anual: &mdash;</span>
+                    <span id="modal-actividad-presupuesto" class="long-number-inline rounded-full bg-slate-100 px-3 py-1 font-medium">Presupuesto: &mdash;</span>
+                  </div>
+                </div>
+              </div>
+
+              <form id="form-modal-avance" class="space-y-6">
+                <input type="hidden" name="avance_id" id="modal-avance_id" />
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div class="sm:col-span-2">
+                    <label for="modal-actividad_id" class="block text-sm font-medium text-slate-700">Actividad</label>
+                    <select name="actividad_id" id="modal-actividad_id" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-placeholder="Seleccionar actividad">
+                      <option value="">Seleccionar actividad...</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="modal-anio" class="block text-sm font-medium text-slate-700">Año</label>
+                    <select name="anio" id="modal-anio" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                      <option value="2025">2025</option>
+                      <option value="2024">2024</option>
+                      <option value="2023">2023</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="modal-bimestre_id" class="block text-sm font-medium text-slate-700">Bimestre</label>
+                    <select name="bimestre_id" id="modal-bimestre_id" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-placeholder="Seleccionar bimestre">
+                      <option value="">Seleccionar bimestre...</option>
+                      <option value="Enero-Febrero" data-index="1">Enero-Febrero</option>
+                      <option value="Marzo-Abril" data-index="2">Marzo-Abril</option>
+                      <option value="Mayo-Junio" data-index="3">Mayo-Junio</option>
+                      <option value="Julio-Agosto" data-index="4">Julio-Agosto</option>
+                      <option value="Septiembre-Octubre" data-index="5">Septiembre-Octubre</option>
+                      <option value="Noviembre-Diciembre" data-index="6">Noviembre-Diciembre</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div id="modal-bimestre-context" class="hidden rounded-2xl border border-indigo-100 bg-indigo-50 p-5 text-sm text-indigo-700">
+                  <div class="space-y-4">
+                    <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-indigo-500">Plan para el bimestre seleccionado</p>
+                        <h5 id="modal-bimestre-context-nombre" class="text-sm font-semibold text-indigo-700">Selecciona un bimestre para ver su distribución planificada.</h5>
+                      </div>
+                      <span id="modal-bimestre-context-alert" class="hidden inline-flex items-center gap-1 rounded-full bg-rose-100 px-3 py-1 text-[11px] font-semibold text-rose-700">Revisión sugerida</span>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div class="rounded-xl bg-white p-4">
+                        <p class="text-[11px] font-semibold uppercase tracking-wide text-indigo-400">Meta planificada</p>
+                        <p id="modal-bimestre-context-meta" class="text-sm font-semibold text-indigo-700 long-number">Meta: &mdash;</p>
+                        <p class="mt-1 text-[11px] text-indigo-500">Registrado: <span id="modal-bimestre-context-meta-registrado" class="long-number">&mdash;</span></p>
+                        <p class="text-[11px] text-indigo-500">Saldo: <span id="modal-bimestre-context-meta-saldo" class="long-number">&mdash;</span></p>
+                      </div>
+                      <div class="rounded-xl bg-white p-4">
+                        <p class="text-[11px] font-semibold uppercase tracking-wide text-indigo-400">Presupuesto planificado</p>
+                        <p id="modal-bimestre-context-presupuesto" class="text-sm font-semibold text-indigo-700 long-number">Presupuesto: &mdash;</p>
+                        <p class="mt-1 text-[11px] text-indigo-500">Registrado: <span id="modal-bimestre-context-presupuesto-registrado" class="long-number">&mdash;</span></p>
+                        <p class="text-[11px] text-indigo-500">Saldo: <span id="modal-bimestre-context-presupuesto-saldo" class="long-number">&mdash;</span></p>
+                      </div>
+                    </div>
+                    <p id="modal-bimestre-context-descripcion" class="whitespace-pre-line text-xs text-indigo-600"></p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div>
+                    <label for="modal-meta_programada_bimestre" class="block text-sm font-medium text-slate-700">Meta programada del bimestre</label>
+                    <input name="meta_programada_bimestre" id="modal-meta_programada_bimestre" type="number" step="any" placeholder="Meta planificada" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label for="modal-logro_valor" class="block text-sm font-medium text-slate-700">Logro reportado</label>
+                    <input name="logro_valor" id="modal-logro_valor" type="number" step="any" placeholder="Valor logrado" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label for="modal-presupuesto_ejecutado_bimestre" class="block text-sm font-medium text-slate-700">Presupuesto ejecutado</label>
+                    <input name="presupuesto_ejecutado_bimestre" id="modal-presupuesto_ejecutado_bimestre" type="number" step="0.01" placeholder="$0" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                  <div>
+                    <div class="flex items-center justify-between gap-3">
+                      <label for="modal-avances-editor" class="block text-sm font-medium text-slate-700">Avances (detalles narrativos)</label>
+                      <button type="button" id="btn-verificar-avances" class="inline-flex items-center gap-2 rounded-md border border-indigo-200 bg-white px-3 py-1 text-xs font-semibold text-indigo-600 shadow-sm hover:border-indigo-300">
+                        <span class="material-symbols-outlined text-base">spellcheck</span>
+                        Verificar ortografía
+                      </button>
+                    </div>
+                    <div class="mt-2 rounded-lg border border-gray-200 bg-white">
+                      <div
+                        id="modal-avances-editor"
+                        class="min-h-[140px] rounded-lg px-3 py-2 text-sm leading-relaxed text-slate-700 focus:outline-none"
+                        data-field-name="avances_texto"
+                        data-orthography-editor
+                        data-orthography-hidden="#modal-avances_texto"
+                        data-orthography-panel="#modal-avances-ortografia-panel"
+                        data-orthography-button="#btn-verificar-avances"
+                        data-orthography-counter="#modal-avances-ortografia-count"
+                        data-orthography-first="#modal-avances-ortografia-first"
+                        contenteditable="true"
+                        spellcheck="false"
+                        aria-label="Descripción de avances"></div>
+                      <textarea id="modal-avances_texto" name="avances_texto" hidden></textarea>
+                    </div>
+                    <div id="modal-avances-ortografia-panel" class="mt-2 rounded-md border border-indigo-100 bg-indigo-50 p-3 text-xs text-indigo-700">
+                      <div id="modal-avances-ortografia-count" data-orthography-count>Ortografía: 0 errores</div>
+                      <div id="modal-avances-ortografia-first" data-orthography-first>Sin revisión.</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between gap-3">
+                      <label for="modal-dificultades-editor" class="block text-sm font-medium text-slate-700">Dificultades / Riesgos</label>
+                      <button type="button" id="btn-verificar-dificultades" class="inline-flex items-center gap-2 rounded-md border border-amber-200 bg-white px-3 py-1 text-xs font-semibold text-amber-600 shadow-sm hover:border-amber-300">
+                        <span class="material-symbols-outlined text-base">spellcheck</span>
+                        Verificar ortografía
+                      </button>
+                    </div>
+                    <div class="mt-2 rounded-lg border border-gray-200 bg-white">
+                      <div
+                        id="modal-dificultades-editor"
+                        class="min-h-[140px] rounded-lg px-3 py-2 text-sm leading-relaxed text-slate-700 focus:outline-none"
+                        data-field-name="dificultades_texto"
+                        data-orthography-editor
+                        data-orthography-hidden="#modal-dificultades_texto"
+                        data-orthography-panel="#modal-dificultades-ortografia-panel"
+                        data-orthography-button="#btn-verificar-dificultades"
+                        data-orthography-counter="#modal-dificultades-ortografia-count"
+                        data-orthography-first="#modal-dificultades-ortografia-first"
+                        contenteditable="true"
+                        spellcheck="false"
+                        aria-label="Descripción de dificultades"></div>
+                      <textarea id="modal-dificultades_texto" name="dificultades_texto" hidden></textarea>
+                    </div>
+                    <div id="modal-dificultades-ortografia-panel" class="mt-2 rounded-md border border-amber-100 bg-amber-50 p-3 text-xs text-amber-700">
+                      <div id="modal-dificultades-ortografia-count" data-orthography-count>Ortografía: 0 errores</div>
+                      <div id="modal-dificultades-ortografia-first" data-orthography-first>Sin revisión.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div class="lg:col-span-2">
+                    <label for="modal-evidencia_url" class="block text-sm font-medium text-slate-700">Evidencia (URL o descripción)</label>
+                    <input name="evidencia_url" id="modal-evidencia_url" type="text" placeholder="https://" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label for="modal-fecha_reporte" class="block text-sm font-medium text-slate-700">Fecha de reporte</label>
+                    <input name="fecha_reporte" id="modal-fecha_reporte" type="date" class="mt-1 w-full rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                  </div>
+                  <div>
+                    <label for="modal-reportado_por" class="block text-sm font-medium text-slate-700">Reportado por</label>
+                    <input name="reportado_por" id="modal-reportado_por" type="text" readonly class="mt-1 w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-slate-600" />
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                  <button type="button" id="btn-cancelar-modal-avance" class="inline-flex items-center gap-2 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50">
+                    Cancelar
+                  </button>
+                  <button type="submit" id="btn-guardar-modal-avance" class="inline-flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors">
+                    <span class="material-symbols-outlined text-base">save</span>
+                    Guardar avance
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <script type="module" src="../lib/loader.js"></script>
+
+  <script type="module">
+    import '../lib/session-guard.js';
+    import { renderSidebar } from '../lib/sidebar-component.js';
+    try { renderSidebar('#shared-sidebar'); } catch (e) { console.warn('renderSidebar failed', e); }
+  </script>
+
+  <script type="module" src="../../public/js/orthography.js"></script>
+  <script type="module" src="../pages_scripts/avances/index.js"></script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Validador de Ortografía - Demo</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Validador de Ortografía en Español</h1>
+      <p>Motor Hunspell (Typo.js) ejecutándose 100% local con diccionario <code>es_ES</code>. Escribe texto, haz clic en el botón o simplemente comienza a redactar para validar en tiempo real.</p>
+    </header>
+
+    <section class="demo-card">
+      <div class="controls">
+        <div>
+          <strong id="panel-count" data-orthography-count>Ortografía: 0 errores</strong>
+          <div id="panel-first" data-orthography-first>Sin errores.</div>
+        </div>
+        <button id="spellcheck-now" class="primary" type="button">Verificar ahora</button>
+      </div>
+
+      <div
+        id="demo-editor"
+        data-field-name="descripcion_demo"
+        data-orthography-editor
+        data-orthography-panel=".demo-card"
+        data-orthography-button="#spellcheck-now"
+        data-orthography-counter="#panel-count"
+        data-orthography-first="#panel-first"
+        contenteditable="true"
+        spellcheck="false"
+      >
+        Hola! Este es un texsto de pruba para demostrar la capácidad del validador ortográphico local.
+        Intenta escribir palabras con errores como organizasion, proyécto, marabilloso o extraordinarió para ver las sugerencias.
+        También puedes corregir con las opciones contextuales.
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/orthography.js"></script>
+</body>
+</html>

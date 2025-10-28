@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Seguimiento</title>
+  <link rel="stylesheet" href="../styles/login.css">
+  <link rel="stylesheet" href="../styles/loader.css">
+  
+    <!-- No inline API override here. In production the app uses a relative /api endpoint
+         which should be provided by the deployment platform (for example a Vercel serverless
+         function that forwards to the Apps Script URL configured via environment variable).
+    -->
+    <script>
+      // Dev helper: when running on localhost, prefer a local proxy to avoid CORS issues.
+      (function(){
+        try {
+    const h = (typeof location !== 'undefined' && location.hostname) ? location.hostname : '';
+    // Treat localhost and common private LAN ranges as development hosts
+    const isLocalHost = h === 'localhost' || h === '127.0.0.1' || /^192\.168\./.test(h) || /^10\./.test(h) || /^172\.(1[6-9]|2\d|3[0-1])\./.test(h);
+  const REMOTE_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzYr2sSS9w7Zgil_vHCrZESGidiVMzaMJKtKUi9A4QPaoUXRR6VmQeeeomdaMr6RJ_duQ/exec';
+    const LOCAL_PROXY_URL = 'http://localhost:3000/api';
+    let useLocalProxy = false;
+    try {
+      useLocalProxy = localStorage.getItem('USE_LOCAL_PROXY') === 'true';
+    } catch (storageErr) {
+      useLocalProxy = false;
+    }
+    if (isLocalHost) {
+            window.APP_CONFIG_OVERRIDE = window.APP_CONFIG_OVERRIDE || {};
+            if (!window.APP_CONFIG_OVERRIDE.BASE_URL) {
+              window.APP_CONFIG_OVERRIDE.BASE_URL = useLocalProxy ? LOCAL_PROXY_URL : REMOTE_BACKEND_URL;
+            }
+            console.log('Dev: APP_CONFIG_OVERRIDE.BASE_URL =', window.APP_CONFIG_OVERRIDE.BASE_URL);
+          }
+        } catch (e) { /* ignore */ }
+      })();
+    </script>
+</head>
+  <body>
+    <!-- background gradients expected by login.css -->
+    <div class="gradient-bg" aria-hidden="true">
+      <div class="gradients-container">
+        <div class="g1"></div>
+        <div class="g2"></div>
+        <div class="g3"></div>
+        <div class="g4"></div>
+        <div class="g5"></div>
+        <div class="interactive"></div>
+      </div>
+    </div>
+    <div class="main-login-wrapper">
+      <div class="login-split-layout">
+        <div class="login-form-panel">
+          <div class="card">
+            <div class="card2">
+              <form id="loginForm" class="form">
+                <div class="welcome-section">
+                  <img src="../assets/Logo_gris.png" alt="Logo" class="form-logo" loading="lazy" onerror="this.style.display='none'">
+                  <h1 class="system-name">PAI 2025</h1>
+                  <h2 class="form-welcome-title">¡Hola, <span style='color: #FFD600'>Bienvenido!</span></h2>
+                  <p class="form-welcome-subtitle">Plataforma de administración e información para el Plan de Acción Institucional 2025</p>
+                </div>
+                <div class="field">
+                  <input autocomplete="off" placeholder="@gestiondelriego.gov.co" class="input-field" type="email" id="email" name="email" required>
+                  <span id="emailError" class="login-error-text"></span>
+                </div>
+                <div class="field">
+                  <input placeholder="Contraseña" class="input-field" type="password" id="password" name="password" required>
+                  <span id="passwordError" class="login-error-text"></span>
+                </div>
+                <div class="btn">
+                  <button type="submit" class="button1">Iniciar Sesión</button>
+                </div>
+                <p class="forgot-password">¿Problemas para acceder? Contacte al administrador del sistema.</p>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="login-visual-panel">
+          <!-- Carousel begins -->
+          <div class="carousel-container">
+            <div class="carousel-slides" id="carouselSlides">
+              <div class="carousel-slide">
+                <div class="feature-icon">
+                  <span class="icon-chart">&#x1F4CA;</span>
+                </div>
+                <h3>Bienvenido a PAI 2025</h3>
+                <p>PAI 2025 centraliza el registro de actividades y avances, proporcionando control total sobre la información registrada y disponible para la toma de decisiones.</p>
+                <img src="../assets/Login_UNGRD.png" alt="Ilustración" class="login-illustration" width="280" loading="lazy" onerror="this.style.display='none'">
+              </div>
+              <div class="carousel-slide">
+                <div class="feature-icon">
+                  <span class="icon-doc">&#x1F4CB;</span>
+                </div>
+                <h3>Registro de actividades</h3>
+                <p>Registra y administra las actividades del proyecto, con seguimiento claro y trazabilidad de cada acción.</p>
+              </div>
+              <div class="carousel-slide">
+                <div class="feature-icon">
+                  <span class="icon-briefcase">&#x1F4BC;</span>
+                </div>
+                <h3>Registro de avances</h3>
+                <p>Documenta los avances de forma estructurada para medir cumplimiento y facilitar auditorías y reportes.</p>
+              </div>
+              <div class="carousel-slide">
+                <div class="feature-icon">
+                  <span class="icon-mobile">&#x1F4F1;</span>
+                </div>
+                <h3>Control y disponibilidad de información</h3>
+                <p>Accede a información consolidada para análisis y toma de decisiones. Todo lo registrado queda disponible y controlado por PAI 2025.</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-dots" id="carouselDots">
+            <div class="carousel-dot active"></div>
+            <div class="carousel-dot"></div>
+            <div class="carousel-dot"></div>
+            <div class="carousel-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script type="module" src="../lib/config.js"></script>
+  <script type="module" src="../lib/ui.js"></script>
+  <script type="module" src="../lib/auth.js"></script>
+  <script type="module" src="../lib/auth-system.js"></script>
+  <script type="module" src="../pages_scripts/login-page.js"></script>
+  </body>
+</html>

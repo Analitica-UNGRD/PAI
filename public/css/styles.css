@@ -1,0 +1,196 @@
+:root {
+  color-scheme: light;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --color-bg: #f5f7fa;
+  --color-panel: #ffffff;
+  --color-border: #d0d7de;
+  --color-accent: #4338ca;
+  --color-error: #d32f2f;
+  --color-text: #111827;
+  --color-subtle: #6b7280;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+main {
+  max-width: 960px;
+  width: 100%;
+}
+
+h1 {
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  color: var(--color-subtle);
+}
+
+.demo-card {
+  background: var(--color-panel);
+  border-radius: 16px;
+  border: 1px solid rgba(17, 24, 39, 0.04);
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08);
+  padding: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button.primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  background: linear-gradient(135deg, #4338ca, #6366f1);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+button.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px -12px rgba(79, 70, 229, 0.6);
+}
+
+#demo-editor {
+  min-height: 240px;
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  line-height: 1.6;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+#demo-editor:focus {
+  border-color: rgba(79, 70, 229, 0.55);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.orthography-error {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--color-error);
+  text-decoration-thickness: 1.5px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.orthography-panel {
+  background: rgba(79, 70, 229, 0.06);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.orthography-panel strong,
+.orthography-count {
+  font-weight: 600;
+  color: #312e81;
+}
+
+.orthography-first-suggestion,
+[data-orthography-first] {
+  color: #4338ca;
+  font-weight: 500;
+}
+
+.orthography-suggestions-menu {
+  position: absolute;
+  z-index: 9999;
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  animation: fade-in 120ms ease;
+}
+
+.orthography-menu-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-subtle);
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+
+.orthography-menu-option,
+.orthography-menu-ignore {
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: background 120ms ease;
+}
+
+.orthography-menu-option:hover {
+  background: rgba(79, 70, 229, 0.08);
+}
+
+.orthography-menu-ignore {
+  color: var(--color-subtle);
+}
+
+.orthography-menu-ignore:hover {
+  background: rgba(17, 24, 39, 0.06);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 2rem 1rem;
+  }
+
+  .demo-card {
+    padding: 1.5rem;
+  }
+
+  button.primary {
+    width: 100%;
+  }
+}

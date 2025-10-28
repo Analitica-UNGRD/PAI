@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B600%3B700&amp;family=Roboto%3Awght%40300%3B400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<!-- Classic Material Icons (used by sidebar markup: <span class="material-icons">) -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<title>PAI 2025 - Panel de Control</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      :root {
+        --primary-color: #4f46e5;
+        --secondary-color: #f0f2f4;
+        --text-primary: #111827;
+        --text-secondary: #6b7280;
+        --background-color: #f9fafb;
+      }
+      body {
+        font-family: 'Roboto', 'Inter', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+<link rel="stylesheet" href="../styles/sidebar.css">
+<link rel="stylesheet" href="../styles/layout.css">
+<link rel="stylesheet" href="../styles/loader.css">
+</head>
+<body class="bg-[var(--background-color)]">
+<div class="h-full min-h-screen w-full flex-col">
+<!-- Header removed: sidebar will act as main navigation and reach the top of the viewport -->
+<div class="flex-1">
+  <div class="layout-with-sidebar">
+    <div id="shared-sidebar" class="hidden md:block"></div>
+    <main class="p-4 sm:p-6 md:p-8">
+<div class="mx-auto max-w-7xl">
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+<h2 class="text-3xl font-bold text-[var(--text-primary)]">Panel de Control</h2>
+<a href="https://gamma.app/docs/Guia-del-Aplicativo-Modular-Web-bknztyckss3cq4q" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md bg-[var(--primary-color)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+  <span class="material-symbols-outlined">menu_book</span>
+              Guía
+            </a>
+</div>
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<p class="text-sm font-medium text-[var(--text-secondary)]">Actividades totales</p>
+<p class="mt-1 text-3xl font-semibold text-[var(--text-primary)]">120</p>
+</div>
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<p class="text-sm font-medium text-[var(--text-secondary)]">En ejecución</p>
+<p class="mt-1 text-3xl font-semibold text-[var(--text-primary)]">45</p>
+</div>
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<p class="text-sm font-medium text-[var(--text-secondary)]">Cerradas</p>
+<p class="mt-1 text-3xl font-semibold text-[var(--text-primary)]">75</p>
+</div>
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<p class="text-sm font-medium text-[var(--text-secondary)]">% Cumplimiento</p>
+<p class="mt-1 text-3xl font-semibold text-[var(--text-primary)]">62.5%</p>
+</div>
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<p class="text-sm font-medium text-[var(--text-secondary)]">Presupuesto Ejecutado</p>
+<p class="mt-1 text-3xl font-semibold text-[var(--text-primary)]">$45k / $50k</p>
+</div>
+</div>
+<div class="mt-8 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+<h3 class="mb-4 text-lg font-medium text-[var(--text-primary)]">Filtros</h3>
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+<label class="block">
+<span class="text-sm font-medium text-[var(--text-secondary)]">Año</span>
+<select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+<option>2025</option>
+<option>2024</option>
+</select>
+</label>
+<label class="block">
+<span class="text-sm font-medium text-[var(--text-secondary)]">Área</span>
+<select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+<option>Todas</option>
+<option>Ventas</option>
+<option>Marketing</option>
+</select>
+</label>
+<label class="block">
+<span class="text-sm font-medium text-[var(--text-secondary)]">Subproceso</span>
+<select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+<option>Todos</option>
+</select>
+</label>
+<label class="block">
+<span class="text-sm font-medium text-[var(--text-secondary)]">Plan</span>
+<select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+<option>Todos</option>
+</select>
+</label>
+<label class="block">
+<span class="text-sm font-medium text-[var(--text-secondary)]">Estado</span>
+<select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+<option>Todos</option>
+<option>En ejecución</option>
+<option>Cerrada</option>
+</select>
+</label>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<h3 class="text-lg font-medium text-[var(--text-primary)]">Actividades por estado por Área</h3>
+<div class="mt-4 grid h-64 grid-flow-col items-end gap-4">
+<div class="flex flex-col items-center gap-1">
+<div class="flex h-full w-8 items-end gap-1">
+<div class="w-1/2 rounded-t-md bg-indigo-500" style="height: 70%"></div>
+<div class="w-1/2 rounded-t-md bg-green-400" style="height: 50%"></div>
+</div>
+<p class="text-xs text-[var(--text-secondary)]">Ventas</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="flex h-full w-8 items-end gap-1">
+<div class="w-1/2 rounded-t-md bg-indigo-500" style="height: 50%"></div>
+<div class="w-1/2 rounded-t-md bg-green-400" style="height: 80%"></div>
+</div>
+<p class="text-xs text-[var(--text-secondary)]">Marketing</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="flex h-full w-8 items-end gap-1">
+<div class="w-1/2 rounded-t-md bg-indigo-500" style="height: 40%"></div>
+<div class="w-1/2 rounded-t-md bg-green-400" style="height: 30%"></div>
+</div>
+<p class="text-xs text-[var(--text-secondary)]">Operaciones</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="flex h-full w-8 items-end gap-1">
+<div class="w-1/2 rounded-t-md bg-indigo-500" style="height: 60%"></div>
+<div class="w-1/2 rounded-t-md bg-green-400" style="height: 90%"></div>
+</div>
+<p class="text-xs text-[var(--text-secondary)]">Producto</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="flex h-full w-8 items-end gap-1">
+<div class="w-1/2 rounded-t-md bg-indigo-500" style="height: 20%"></div>
+<div class="w-1/2 rounded-t-md bg-green-400" style="height: 100%"></div>
+</div>
+<p class="text-xs text-[var(--text-secondary)]">RRHH</p>
+</div>
+</div>
+</div>
+<div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+<h3 class="text-lg font-medium text-[var(--text-primary)]">Logro acumulado por Bimestre</h3>
+<div class="mt-4 grid h-64 grid-flow-col items-end gap-6">
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 rounded-t-md bg-indigo-500" style="height: 30%"></div>
+<p class="text-xs text-[var(--text-secondary)]">Bim 1</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 rounded-t-md bg-indigo-500" style="height: 50%"></div>
+<p class="text-xs text-[var(--text-secondary)]">Bim 2</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 rounded-t-md bg-indigo-500" style="height: 65%"></div>
+<p class="text-xs text-[var(--text-secondary)]">Bim 3</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 rounded-t-md bg-gray-300" style="height: 80%"></div>
+<p class="text-xs text-[var(--text-secondary)]">Bim 4</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 rounded-t-md bg-gray-300" style="height: 90%"></div>
+<p class="text-xs text-[var(--text-secondary)]">Bim 5</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 rounded-t-md bg-gray-300" style="height: 100%"></div>
+<p class="text-xs text-[var(--text-secondary)]">Bim 6</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead class="bg-gray-50">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500" scope="col">Actividad</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500" scope="col">Área</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500" scope="col">Indicador</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500" scope="col">Meta</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500" scope="col">% Avance</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500" scope="col">Estado</th>
+<th class="relative px-6 py-3" scope="col"><span class="sr-only">Ver</span></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200 bg-white">
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">Campaña de Marketing Digital</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Marketing</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Leads</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">1000</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<span>75%</span>
+<div class="w-24 rounded-full bg-gray-200"><div class="h-2 rounded-full bg-indigo-600" style="width: 75%"></div></div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex rounded-full bg-blue-100 px-2 text-xs font-semibold leading-5 text-blue-800"> En ejecución </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+<a class="text-indigo-600 hover:text-indigo-900" href="#">Ver</a>
+</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">Desarrollo de Producto X</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Producto</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Características</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">5</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<span>100%</span>
+<div class="w-24 rounded-full bg-gray-200"><div class="h-2 rounded-full bg-green-600" style="width: 100%"></div></div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"> Cerrada </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+<a class="text-indigo-600 hover:text-indigo-900" href="#">Ver</a>
+</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">Expansión a Nuevo Mercado</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Ventas</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Clientes</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">500</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<span>50%</span>
+<div class="w-24 rounded-full bg-gray-200"><div class="h-2 rounded-full bg-indigo-600" style="width: 50%"></div></div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex rounded-full bg-blue-100 px-2 text-xs font-semibold leading-5 text-blue-800"> En ejecución </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+<a class="text-indigo-600 hover:text-indigo-900" href="#">Ver</a>
+</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">Mejora de Procesos Internos</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Operaciones</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Tiempo</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">20%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<span>80%</span>
+<div class="w-24 rounded-full bg-gray-200"><div class="h-2 rounded-full bg-indigo-600" style="width: 80%"></div></div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex rounded-full bg-blue-100 px-2 text-xs font-semibold leading-5 text-blue-800"> En ejecución </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+<a class="text-indigo-600 hover:text-indigo-900" href="#">Ver</a>
+</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">Capacitación de Personal</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">RRHH</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">Horas</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">40</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<span>100%</span>
+<div class="w-24 rounded-full bg-gray-200"><div class="h-2 rounded-full bg-green-600" style="width: 100%"></div></div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"> Cerrada </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+<a class="text-indigo-600 hover:text-indigo-900" href="#">Ver</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+  </main>
+</div>
+</div>
+
+<script type="module" src="../lib/loader.js"></script>`r`n`r`n<script type="module">
+  import '../lib/session-guard.js';
+  import { renderSidebar } from '../lib/sidebar-component.js';
+  // Mount into the shared container. The component will avoid double-rendering if already present.
+  try { renderSidebar('#shared-sidebar'); } catch (e) { console.warn('renderSidebar failed', e); }
+</script>
+
+</body></html>
+

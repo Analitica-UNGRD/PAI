@@ -1,0 +1,211 @@
+/* Sidebar styles - consolidated and cleaned
+   - Smooth width animation on the container
+   - Icons visible when collapsed
+   - Labels animate opacity/translate with stagger for a soft entrance
+   - Reduced motion respected
+*/
+
+:root{ --sidebar-bg: #1f2937; --pin-color: #f59e0b; --sidebar-collapsed-w: 64px; --sidebar-expanded-w: 16rem; }
+
+.sidebar{
+  background-color: var(--sidebar-bg);
+  position: fixed; /* fixed so it stays visible while the page scrolls */
+  left: 0;
+  top: 0;
+  z-index: 9999; /* ensure sidebar stays above main content when main creates a stacking context */
+  height:100vh;
+  width: var(--sidebar-width, var(--sidebar-collapsed-w));
+  min-width: var(--sidebar-width, var(--sidebar-collapsed-w));
+  display:flex;
+  flex-direction:column;
+  /* keep width transition but use a gentler easing for a softer feel */
+  transition: width 260ms cubic-bezier(.25,.8,.25,1), box-shadow 220ms cubic-bezier(.25,.8,.25,1), opacity 180ms ease;
+  will-change: width, box-shadow, opacity;
+  overflow:visible;
+  flex-shrink:0;
+  transform-origin: left center;
+}
+.sidebar{ overflow-x: hidden; }
+.sidebar.expanded{ 
+  width: var(--sidebar-expanded-w); 
+  /* slightly reduced shadow so expansion feels lighter */
+  box-shadow: 0 6px 18px rgba(15,23,42,0.12); 
+  opacity: 1;
+}
+
+/* Header area */
+.sidebar > .p-6{ padding: 1.25rem; }
+.sidebar .menu-title{ display:block; transition: opacity 140ms ease, transform 140ms ease; }
+
+/* Nav area */
+.sidebar nav{ flex:1 1 auto; overflow-y:auto; overflow-x:hidden; padding-bottom:0; -webkit-overflow-scrolling: touch; }
+.sidebar nav{ -ms-overflow-style: none; scrollbar-width: none; }
+.sidebar nav::-webkit-scrollbar{ width: 0; height: 0; }
+.sidebar nav ul{ display:flex; flex-direction:column; gap:1rem; margin:0; padding:0.5rem; list-style:none; }
+.sidebar nav ul li{ border-radius:8px; }
+.idebug-hidden{ display:none !important; }
+.sidebar nav ul li a{ 
+  display:flex; 
+  align-items:center; 
+  gap:1rem; 
+  padding:0.6rem 0.75rem; 
+  color:inherit; 
+  min-height:48px;
+  border-radius: 8px;
+  /* slightly shorter transform timing and gentler easing for link hover */
+  transition: background-color 180ms cubic-bezier(.22,.9,.3,1), color 180ms ease, transform 180ms cubic-bezier(.22,.9,.3,1);
+  will-change: transform, background-color, color;
+  position: relative;
+  overflow: hidden;
+}
+.sidebar nav ul li a{ width:100%; box-sizing:border-box; }
+
+/* Hover effects */
+.sidebar nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f3f4f6;
+  /* smaller nudge on hover for a subtler feel */
+  transform: translateX(2px);
+}
+.sidebar nav ul li a:hover .material-icons {
+  color: #60a5fa;
+  /* reduced icon scale to keep motion subtle */
+  transform: scale(1.04);
+  transition: color 180ms ease, transform 160ms cubic-bezier(.22,.9,.3,1);
+}
+
+/* Active item styling */
+.sidebar nav ul li.bg-gray-700 a { background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); color: white; box-shadow: 0 2px 8px rgba(79,70,229,0.3); }
+.sidebar nav ul li.bg-gray-700 a .material-icons { color: #ddd6fe; }
+
+/* Collapsed layout: center icons */
+.sidebar.collapsed nav{ overflow:visible; }
+.sidebar.collapsed nav ul li a{ justify-content:center; padding-left:0; padding-right:0; }
+.sidebar.collapsed nav ul li{ padding-left:0; padding-right:0; }
+
+/* Labels */
+.sidebar .menu-label{ display:inline-block; transition: opacity 260ms cubic-bezier(.25,.8,.25,1), transform 260ms cubic-bezier(.25,.8,.25,1); transform-origin: left center; opacity:1; transform: translateX(0); }
+.sidebar.collapsed .menu-label{ opacity:0; transform: translateX(-4px) scale(0.985); width:0; margin:0; pointer-events:none; transition: opacity 140ms ease-in, transform 200ms cubic-bezier(.36,.06,.23,.94); }
+.sidebar.expanded .menu-label{ opacity:1; transform: translateX(0); }
+.sidebar.collapsed .menu-title{ display:none; }
+
+/* Bottom area */
+.sidebar .bottom-area{ width:100%; padding:1rem; display:flex; align-items:center; justify-content:space-between; }
+.sidebar.collapsed .bottom-area a{ justify-content:center; padding-left:0; padding-right:0; }
+
+/* Logout button */
+.logout-danger { background: #6b7280; color: #fff; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 100%; box-sizing: border-box; gap: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logout-danger:hover { background: #4b5563; }
+.logout-danger .material-icons { font-size: 18px; }
+.sidebar.collapsed .logout-danger { width: 44px; padding-left: 6px; padding-right: 6px; justify-content: center; }
+.sidebar.collapsed .logout-danger .menu-label { display: none !important; }
+
+/* Bottom area expanded behavior */
+.sidebar.expanded .bottom-area { display:flex; flex-direction:column !important; align-items:stretch !important; gap:0.5rem; }
+.sidebar.expanded .bottom-area > div:first-child { display:flex; justify-content:space-between; align-items:center; width:100%; }
+.sidebar.expanded .bottom-area > div:last-child { width:100%; }
+.sidebar.expanded .bottom-area .logout-danger { width:100%; justify-content:flex-start; padding-left:12px; }
+
+/* Pin button visuals */
+.pin-btn.pinned{ color: var(--pin-color); }
+.pin-btn{ display:inline-flex; align-items:center; justify-content:center; border-radius:6px; opacity:0; pointer-events:none; transform:translateY(3px); transition: opacity .15s ease, transform .15s ease; }
+.sidebar.collapsed .pin-btn{ opacity:0 !important; pointer-events:none !important; }
+.sidebar:focus-within .pin-btn, .sidebar.expanded .pin-btn, .pin-btn.pinned, .pin-btn.force-visible{ opacity:1; pointer-events:auto; transform:translateY(0); transition: opacity 200ms ease, transform 200ms cubic-bezier(.2,.9,.2,1); }
+
+/* Helpers */
+.sidebar li.bg-gray-700{ background: transparent !important; }
+.sidebar li.text-white{ color:#fff !important; }
+
+@media (prefers-reduced-motion:reduce){ .sidebar, .pin-btn{ transition:none !important; } }
+
+/* Icons */
+.sidebar nav ul li a .material-icons{ display:block; font-size:24px; line-height:24px; transition: transform 150ms ease, color 180ms ease; }
+.sidebar.collapsed nav ul li a .material-icons{ display:block; font-size:24px; line-height:24px; }
+.sidebar.collapsed nav ul li a .menu-label{ display:none !important; }
+
+/* Collapsed overrides */
+.sidebar.collapsed{ overflow:hidden !important; }
+.sidebar.collapsed .menu-label{ display:none !important; opacity:0 !important; max-width:0 !important; width:0 !important; margin:0 !important; padding:0 !important }
+.sidebar.collapsed .bottom-area{ padding-left:6px; padding-right:6px; box-sizing:border-box; overflow:hidden }
+.sidebar.collapsed .bottom-area .logout-danger{ max-width:100%; padding-left:6px; padding-right:6px; box-sizing:border-box }
+.sidebar .bottom-area a, .sidebar .bottom-area .pin-btn{ flex:0 0 auto }
+.sidebar.collapsed .bottom-area{ align-items:center; }
+.sidebar.collapsed .bottom-area a{ justify-content:center; width:100%; display:inline-flex; align-items:center; }
+.sidebar.collapsed .bottom-area a .material-icons{ font-size:24px; line-height:24px }
+
+/* Sidebar inner wrapper (structural only) */
+.sidebar .sidebar-inner{ display:flex; flex-direction:column; min-height:100vh; height:100%; }
+
+/* Ensure main content doesn't overlay the sidebar (main may create stacking context via transform) */
+.layout-with-sidebar main{ z-index: 0; }
+
+/* Staggered label delays for smoother entrance */
+.sidebar.expanded nav ul li:nth-child(1) .menu-label { transition-delay: 40ms; }
+.sidebar.expanded nav ul li:nth-child(2) .menu-label { transition-delay: 70ms; }
+.sidebar.expanded nav ul li:nth-child(3) .menu-label { transition-delay: 100ms; }
+.sidebar.expanded nav ul li:nth-child(4) .menu-label { transition-delay: 130ms; }
+.sidebar.expanded nav ul li:nth-child(5) .menu-label { transition-delay: 160ms; }
+.sidebar.expanded nav ul li:nth-child(6) .menu-label { transition-delay: 190ms; }
+
+.logout-danger .material-icons {
+  font-size: 18px;
+}
+
+.sidebar.collapsed .logout-danger {
+    width: 44px;
+    padding-left: 6px;
+    padding-right: 6px;
+    justify-content: center;
+}
+
+.sidebar.collapsed .logout-danger .menu-label {
+    display: none !important;
+}
+
+/* Ensure bottom-area stacks vertically when sidebar is expanded or hovered */
+.sidebar.expanded .bottom-area { display:flex; flex-direction:column !important; align-items:stretch !important; gap:0.5rem; }
+.sidebar.expanded .bottom-area > div:first-child { display:flex; justify-content:space-between; align-items:center; width:100%; }
+.sidebar.expanded .bottom-area > div:last-child { width:100%; }
+.sidebar.expanded .bottom-area .logout-danger { width:100%; justify-content:flex-start; padding-left:12px; }
+
+/* Pin button visuals and visibility rules */
+.pin-btn.pinned{ color: var(--pin-color); }
+.pin-btn{ display:inline-flex; align-items:center; justify-content:center; border-radius:6px; opacity:0; pointer-events:none; transform:translateY(4px); transition: opacity .15s ease, transform .15s ease; }
+.sidebar.collapsed .pin-btn{ opacity:0 !important; pointer-events:none !important; }
+.sidebar:focus-within .pin-btn, .sidebar.expanded .pin-btn, .pin-btn.pinned, .pin-btn.force-visible{ opacity:1; pointer-events:auto; transform:translateY(0); transition: opacity 200ms ease, transform 200ms cubic-bezier(.2,.9,.2,1); }
+
+/* Active item helper used by JS - remove gray background, keep only the gradient on the link */
+.sidebar li.bg-gray-700{ background: transparent !important; }
+.sidebar li.text-white{ color:#fff !important; }
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion:reduce){
+  .sidebar, .pin-btn{ transition:none !important; }
+}
+
+/* Make icons visually centered when sidebar is collapsed */
+.sidebar nav ul li a .material-icons{ 
+  display:block; 
+  font-size:24px; 
+  line-height:24px;
+  transition: transform 150ms ease, color 180ms ease;
+}
+.sidebar.collapsed nav ul li a .material-icons{ 
+  display:block; 
+  font-size:24px; 
+  line-height:24px; 
+}
+.sidebar.collapsed nav ul li a .menu-label{ display:none !important; }
+
+/* Override: ensure collapsed sidebar clips any overflowing children and hides labels */
+.sidebar.collapsed{ overflow:hidden !important; }
+.sidebar.collapsed .menu-label{ display:none !important; opacity:0 !important; max-width:0 !important; width:0 !important; margin:0 !important; padding:0 !important }
+.sidebar.collapsed .bottom-area{ padding-left:6px; padding-right:6px; box-sizing:border-box; overflow:hidden }
+.sidebar.collapsed .bottom-area .logout-danger{ max-width:100%; padding-left:6px; padding-right:6px; box-sizing:border-box }
+
+.sidebar .bottom-area a, .sidebar .bottom-area .pin-btn{ flex:0 0 auto }
+
+/* When collapsed, center settings icon so it lines up with nav icons */
+.sidebar.collapsed .bottom-area{ align-items:center; }
+.sidebar.collapsed .bottom-area a{ justify-content:center; width:100%; display:inline-flex; align-items:center; }
+.sidebar.collapsed .bottom-area a .material-icons{ font-size:24px; line-height:24px }
