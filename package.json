@@ -1,12 +1,13 @@
 {
-  "name": "sisco-pai",
+  "name": "PAI 2025",
   "version": "1.0.0",
-  "description": "Sistema Integral de Seguimiento Contractual OAPI",
+  "description": "Sistema de recopilación de datos para el PAI 2025",
   "private": true,
   "scripts": {
   "dev": "npx http-server src -c-1 -p 3000",
   "start": "npx http-server src -c-1 -p 8080",
-    "build": "echo 'Static HTML - no build step needed'"
+    "build": "echo 'Static HTML - no build step needed'",
+    "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0"
   },
   "keywords": [
     "login",
@@ -18,6 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.0.0",
+    "conventional-changelog-cli": "^2.2.2",
     "cross-env": "^7.0.3",
     "http-server": "^14.1.1"
   },
